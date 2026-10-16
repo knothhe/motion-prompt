@@ -1,0 +1,41 @@
+// Motion Prompt #103 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#103
+//
+// 黄金时刻 / Golden hour
+// 素材包: photo (摄影风格、光线与效果) · element 07 · 分类: 布光与时段
+// 示例效果: 太阳降到地平线上方，天空与地面变橙，人物左侧受光，灯与树影向右拉长。
+// 效果规格:
+//   - 场景 1：地平线 y = 150 前的半身人物，头部中心 (270, 78)、半径 29px，无面部与头发。
+//   - 太阳半径 18px，从 (110, −30) 到 (96, 136)，一半被山遮住。
+//   - 天空从 #FAF9F7 变为顶部 #FFE8BC、地平线 #FFCF80，地面 #F1F0EE→#F6DDB0；人物亮部 #FFB547、阴影 #3E3650。
+//   - 头部左侧约 66° 光线照射，分界右侧为阴影；身体左亮右暗。
+//   - 灯与树的脚部阴影向右，长 0→150px，#DDAA6E；右上时间 12:00→17:40。
+//   - 时间：0.4–1.4 秒效果渐入，保持至 4.0 秒，4.8 秒前消失；每轮 5 秒，三次方缓入缓出，约 cubic-bezier(0.65,0,0.35,1)。
+// 适用场景: 适合温暖、怀旧、柔和的画面。
+// 标签: golden hour, magic hour, sunset light, warm light, long shadows, low sun
+// 尺寸: 539x208 px · 循环周期: 5 s
+// Needs: kit photo -> https://motion-prompt.knothhe.com/api/v1/kit/photo.js
+// 动态示例: https://motion-prompt.knothhe.com/#103
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 07
+// ゴールデンアワー: 太陽が地平線近くまで下り、全体が橙に染まって影が長く伸びる
+CELLS[6] = cell((k, u) => {
+  const a = env(u), R = PR, W = torsoW(R);
+  const GOLD = {
+    sky: '#FFE8BC', sky2: '#FFCF80', far: '#F2C58C', mid: '#E8B27A', ground: '#F6DDB0', ground2: '#ECC892', mark: '#F6DDB0', cast: '#DDAA6E',
+    bld: '#F7DCAE', edge: '#D9AE76', win: '#ECC892', winOff: '#ECC892', tree: '#E9C08A', trunk: '#C9965E', post: '#B98A58', bulb: '#C9965E',
+    person: '#5C5470', shade: '#3E3650', lit: '#FFB547', car: '#A08E8E', glass: '#F6DDB0', tire: '#3E3650', sun: '#F59A24', glow: '#FFD48A'
+  };
+  const p = pal(BASE, GOLD, a);
+  stagePortrait(k, p, { sun: [lerp(110, 96, a), lerp(-30, 136, a), 18, 1], cast: lerp(0, 150, a) });
+  const lit = mixc(p.person, GOLD.lit, a), sh = mixc(p.person, GOLD.shade, a);
+  bust(k, PX, PY, R, p.person, kk => {
+    kk.fillStyle = lit; kk.beginPath(); kk.arc(PX, PY, R, 0, TAU); kk.fill();
+    headShade(kk, PX, PY, R, 1.15, 1, sh);
+    torso(kk, PX, PY, R, PX - W, PX - 0.5 * W, lit);
+    torso(kk, PX, PY, R, PX + 0.4 * W, PX + W, sh);
+  });
+  hud(k, clock(lerp(720, 1060, a)));
+});

@@ -1,0 +1,33 @@
+// Motion Prompt #104 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#104
+//
+// 蓝调时刻 / Blue hour
+// 素材包: photo (摄影风格、光线与效果) · element 08 · 分类: 布光与时段
+// 示例效果: 太阳下沉后天空变深蓝，窗户与路灯变琥珀色，人物变深蓝轮廓。
+// 效果规格:
+//   - 场景 1：地平线 y = 150 前的半身人物，头部中心 (270, 78)、半径 29px，无面部与头发。
+//   - 太阳半径 18px、x = 120，效果达 70% 时 y 从 40 到 190，在进度 40–80% 间淡出。
+//   - 天空顶部 #2C3B5E、地平线 #4A6191，地面 #283452，建筑 #34446B，人物 #1C2439。
+//   - 每三个窗户亮一个，灯泡 #FFC75A，周围半径 13 和 8px 平面光环，#FFE3A3、透明度 35% 与 60%。
+//   - 右上时间 12:00→18:35。
+//   - 时间：0.4–1.4 秒效果渐入，保持至 4.0 秒，4.8 秒前消失；每轮 5 秒，三次方缓入缓出，约 cubic-bezier(0.65,0,0.35,1)。
+// 适用场景: 适合同时保留蓝色天空与灯光的城市夜景。
+// 标签: blue hour, twilight, dusk, night city, cityscape, deep blue sky
+// 尺寸: 539x208 px · 循环周期: 5 s
+// Needs: kit photo -> https://motion-prompt.knothhe.com/api/v1/kit/photo.js
+// 动态示例: https://motion-prompt.knothhe.com/#104
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 08
+// ブルーアワー: 日が沈んだ後、空が深い青になり、窓と街灯の暖かい光が灯る
+CELLS[7] = cell((k, u) => {
+  const a = env(u);
+  const p = pal(BASE, NIGHT, a);
+  stagePortrait(k, p, {
+    sun: [120, lerp(40, 190, P(a, 0, 0.7)), 18, 1 - P(a, 0.4, 0.8)],
+    after: D => { const k2 = D.k; k2.save(); k2.globalAlpha = 0.35 * a; D.circ(413, HZ - 53, 13, BASE.glow); k2.globalAlpha = 0.6 * a; D.circ(413, HZ - 53, 8, BASE.glow); k2.restore(); D.circ(413, HZ - 53, 4, p.bulb); }
+  });
+  bust(k, PX, PY, PR, p.person);
+  hud(k, clock(lerp(720, 1115, a)));
+});

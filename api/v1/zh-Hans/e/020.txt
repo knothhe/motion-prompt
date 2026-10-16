@@ -1,0 +1,36 @@
+// Motion Prompt #020 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#020
+//
+// 穿越缩放 / Zoom through
+// 素材包: motion (动态图形动作) · element 20 · 分类: 转场与强调
+// 示例效果: 镜头推入字母 O 的孔洞，从中穿出到下一场景。
+// 效果规格:
+//   - 场景 X 为黄色底 ZOOM，场景 Y 为蓝色底 GO!，两者交替，每段 2.35 秒。
+//   - 当前场景以 O 的孔洞中心缩放，孔半径 24.5。最大缩放为刚好覆盖全屏所需倍率的 1.08 倍，约 14 倍。
+//   - 缩放 = maxScale^p，指数缩放形成恒定速度的观感。
+//   - p = 0.8 × 三次方缓入（0.25–1.2 秒）+ 0.2 × 三次方缓出（1.2–1.65 秒），先加速、末尾减速。
+//   - 孔中下一场景以 1/maxScale 放置，缩放结束时恰好满尺寸，再切换到下一场景。
+// 适用场景: 适合借标志或字母带着冲劲进入下一场景。
+// 标签: zoom, zoom-through, transition, push-in, scale, tunnel, scene-change
+// 尺寸: 539x208 px · 循环周期: 4.7 s
+// Needs: kit motion -> https://motion-prompt.knothhe.com/api/v1/kit/motion.js
+// 动态示例: https://motion-prompt.knothhe.com/#020
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 20
+// 20 ズームスルー（文字の「O」の穴へ突っ込んで、その先の画面へ抜ける）
+function ring(k, x, y, col) { k.strokeStyle = col; k.lineWidth = 21; k.beginPath(); k.arc(x, y, 35, 0, 7); k.stroke(); }
+const ZP = [{ x: 228, y: 106, r: 24.5 }, { x: 300, y: 106, r: 24.5 }];
+function scrX(k, w, h) { k.fillStyle = C.yel; k.fillRect(0, 0, w, h); const f = `800 118px ${DISP}`; txt(k, 'Z', 128, 110, f, C.navy, 'center', 'middle'); ring(k, 228, 106, C.navy); ring(k, 324, 106, C.navy); txt(k, 'M', 432, 110, f, C.navy, 'center', 'middle'); }
+function scrY(k, w, h) { k.fillStyle = C.blue; k.fillRect(0, 0, w, h); const f = `800 118px ${DISP}`; txt(k, 'G', 208, 110, f, '#fff', 'center', 'middle'); ring(k, 300, 106, '#fff'); txt(k, '!', 372, 110, f, C.yel, 'center', 'middle'); }
+const SCZ = [scrX, scrY], ZBG = [C.yel, C.blue];
+CELLS[19] = abCell((k, w, h, u, a, b) => {
+  const po = ZP[a], Smax = Math.hypot(Math.max(po.x, w - po.x), Math.max(po.y, h - po.y)) / po.r * 1.08;
+  const p = eIn(P(u, TA - 0.25, TB - 0.3)) * 0.8 + eOut(P(u, TB - 0.3, TB + 0.15)) * 0.2;
+  if (p >= 1) return SCZ[b](k, w, h);
+  const s = Math.pow(Smax, p), Z = (kk, sc) => { kk.translate(po.x, po.y); kk.scale(sc, sc); kk.translate(-po.x, -po.y); };
+  k.save(); Z(k, s); SCZ[a](k, w, h);
+  k.save(); k.beginPath(); k.arc(po.x, po.y, po.r, 0, 7); k.clip(); k.fillStyle = ZBG[b]; k.fillRect(0, 0, w, h); Z(k, 1 / Smax); SCZ[b](k, w, h); k.restore();
+  k.restore();
+});

@@ -13,7 +13,7 @@
 | 受け入れ口 | 何を | 送り方 | 入る場所 |
 |---|---|---|---|
 | 名前のパック | あなたの分野の名前と動く見本、今あるパックの別の言語 | pull request（相談だけなら [名前・パックの提案](https://github.com/showheyohtaki/motion-prompt/issues/new?template=1-contribution.yml)） | `packs/<pack>/` |
-| 見つけた事例 | 名前に見本を付けて公開している X のポスト（自薦も歓迎） | [事例の推薦](https://github.com/showheyohtaki/motion-prompt/issues/new?template=2-example.yml) | `examples/found.json` と[事例のページ](https://showheyohtaki.github.io/motion-prompt/found.html) |
+| 見つけた事例 | 名前に見本を付けて公開している X のポスト（自薦も歓迎） | [事例の推薦](https://github.com/showheyohtaki/motion-prompt/issues/new?template=2-example.yml) | `examples/found.json` と[事例のページ](https://motion-prompt.knothhe.com/found.html) |
 | 寄稿 | 自分で作った作例（動画・HTML・早見表の画像）、名前の直し | pull request か [名前・パックの提案](https://github.com/showheyohtaki/motion-prompt/issues/new?template=1-contribution.yml) | `make-your-own/examples/<slug>/<lang>/` など |
 
 「作例」は make-your-own で自分が作った物、「事例」はほかの人の X のポストです。

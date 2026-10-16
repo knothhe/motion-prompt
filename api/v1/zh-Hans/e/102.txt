@@ -1,0 +1,34 @@
+// Motion Prompt #102 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#102
+//
+// 蝴蝶光 / Butterfly lighting
+// 素材包: photo (摄影风格、光线与效果) · element 06 · 分类: 布光与时段
+// 示例效果: 前上方灯亮起，两侧面部均匀受光，仅下巴下有对称小阴影。
+// 效果规格:
+//   - 场景 1：地平线 y = 150 前的半身人物，头部中心 (270, 78)、半径 29px，无面部与头发。 背景变暗，天空 #E7E5E1。
+//   - 头部完全受光 #FFC75A，无暗侧。
+//   - 下巴下阴影为椭圆，中心 y = 78+1.06R，宽 0.72R、高 0.38R，R = 29，约 21×11px，颜色 #33405A。
+//   - 身体中心 ±0.8×56px 内受光，外侧细条保持原色；灯位在镜头侧 0°，右上“0° · ↑45°”。
+//   - 时间：0.4–1.4 秒效果渐入，保持至 4.0 秒，4.8 秒前消失；每轮 5 秒，三次方缓入缓出，约 cubic-bezier(0.65,0,0.35,1)。
+// 适用场景: 适合美妆与时尚人像。
+// 标签: butterfly lighting, paramount lighting, beauty lighting, portrait lighting, overhead light, glamour
+// 尺寸: 539x208 px · 循环周期: 5 s
+// Needs: kit photo -> https://motion-prompt.knothhe.com/api/v1/kit/photo.js
+// 动态示例: https://motion-prompt.knothhe.com/#102
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 06
+// バタフライライティング: 顔の正面・高い位置からの光。顔は左右対称に明るく、あごの下にだけ小さな影
+CELLS[5] = cell((k, u) => {
+  const a = env(u), R = PR, W = torsoW(R);
+  stagePortrait(k, pal(BASE, DIM, a));
+  const lit = mixc(BASE.person, BASE.lit, a), sh = mixc(BASE.person, BASE.shade, a);
+  bust(k, PX, PY, R, BASE.person, kk => {
+    torso(kk, PX, PY, R, PX - 0.8 * W, PX + 0.8 * W, lit);
+    kk.fillStyle = sh; kk.beginPath(); kk.ellipse(PX, PY + R * 1.06, R * 0.72, R * 0.38, 0, 0, TAU); kk.fill();    // あごの下の影（左右対称）
+    kk.fillStyle = lit; kk.beginPath(); kk.arc(PX, PY, R, 0, TAU); kk.fill();
+  });
+  plan(k, [[0, a]]);
+  hud(k, '0° · ↑45°');
+});

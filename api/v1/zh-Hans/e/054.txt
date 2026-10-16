@@ -1,0 +1,36 @@
+// Motion Prompt #054 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#054
+//
+// 工具提示 / Tooltip
+// 素材包: ui (UI 组件名称) · element 06 · 分类: 展开与叠层
+// 示例效果: 悬停问号后出现深色说明气泡，光标移开后消失。
+// 效果规格:
+//   - 542×191 卡片，周期 4.5 秒。问号蓝色圆环半径 13，位于 (196, 121)，旁边有标签。
+//   - 仅悬停不点击，1.05 秒到达问号，停留到 3.15 秒，4.1 秒离开卡片。
+//   - 显示量 a 在 1.15–1.35 秒以 easeOutCubic 从 0→1，透明度 a，向上 6px 归位。
+//   - 气泡 #26282c，184×36、圆角 8、顶部 y = 64，16 宽 8 高的三角指向下方图标；白色 15px 文字。
+//   - 3.25–3.45 秒透明度线性 1→0。
+// 适用场景: 适合为图标或缩写提供不占页面空间的一行提示。
+// 标签: tooltip, hint, hover, help, info, title
+// 尺寸: 542x191 px · 循环周期: 4.5 s
+// Needs: kit ui -> https://motion-prompt.knothhe.com/api/v1/kit/ui.js
+// 动态示例: https://motion-prompt.knothhe.com/#054
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 06
+// 06 ツールチップ（Tooltip）
+CELLS[5] = ui((w, h, t) => {
+  pageLines(24, 16, 494);
+  bar(24, 116, 150, C.line2, 11); ring(196, 121, 13, C.blue, 2.2); text('?', 196, 122, 16, C.blue, 700, 'center', NUMF);
+  fillRR(24, 146, 494, 34, 8, C.block);
+  const a = eo(seg(t, 1.15, 1.35)) * (1 - seg(t, 3.25, 3.45));
+  if (a > 0) {
+    X.save(); X.globalAlpha = a; const yy = 64 + 6 * (1 - a);
+    fillRR(196 - 92, yy, 184, 36, 8, C.dark);
+    X.beginPath(); X.moveTo(196 - 8, yy + 36); X.lineTo(196, yy + 44); X.lineTo(196 + 8, yy + 36); X.fillStyle = C.dark; X.fill();
+    text('小さな説明が出る', 196, yy + 18, 15, '#fff', 600, 'center'); X.restore();
+  }
+  // 乗せるだけ（クリックしない）
+  pointer([[.3, w + 30, h + 30], [1.05, 200, 126], [3.15, 200, 126], [4.1, w + 30, h + 30]], [], t);
+});

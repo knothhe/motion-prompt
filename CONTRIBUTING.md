@@ -13,7 +13,7 @@ You do not have to write the code yourself. The prompts in [`make-your-own/promp
 | Way in | What | How to send it | Where it goes |
 |---|---|---|---|
 | A pack of names | The names of your field with moving samples, or another language for an existing pack | A pull request (or [Suggest names or a pack](https://github.com/showheyohtaki/motion-prompt/issues/new?template=1-contribution.yml) to talk it over first) | `packs/<pack>/` |
-| An example you found | A post on X that shares names with samples (your own is welcome) | [Suggest an example](https://github.com/showheyohtaki/motion-prompt/issues/new?template=2-example.yml) | `examples/found.json` and the [examples page](https://showheyohtaki.github.io/motion-prompt/found.html) |
+| An example you found | A post on X that shares names with samples (your own is welcome) | [Suggest an example](https://github.com/showheyohtaki/motion-prompt/issues/new?template=2-example.yml) | `examples/found.json` and the [examples page](https://motion-prompt.knothhe.com/found.html) |
 | A contribution | Something you made with make-your-own (videos, HTML, a cheat-sheet image), or a fix to a name | A pull request or [Suggest names or a pack](https://github.com/showheyohtaki/motion-prompt/issues/new?template=1-contribution.yml) | `make-your-own/examples/<slug>/<lang>/` and so on |
 
 "Make-your-own examples" are things you made yourself; "examples you found" are other people's posts on X.

@@ -7,7 +7,7 @@ of how to ask for it, and a copyable prompt (ja/en), so people can tell Claude C
 "use #012 and #045" or "swap this title for #005".
 
 Repo: GitHub `showheyohtaki/motion-prompt` (MIT) → GitHub Pages
-`https://showheyohtaki.github.io/motion-prompt/`. Author: 大滝昇平 / Shohei Ohtaki (@showheyohtaki).
+`https://motion-prompt.knothhe.com/`. Author: 大滝昇平 / Shohei Ohtaki (@showheyohtaki).
 No build framework. The gallery, the packs, the API and the skill are plain HTML/CSS/JS and Node 18+
 scripts with zero npm dependencies. Only `make-your-own/` (rendering your own videos) has a
 `package.json`; it needs Playwright and ffmpeg.
@@ -147,9 +147,9 @@ api/v1/kit/<pack>.js                @kit + all @shared blocks of the pack, plus 
 ```
 
 First line of every `e/<id>.txt` and `kit/<pack>.js`:
-`// Motion Prompt #<id> · MIT License (c) 2026 Shohei Ohtaki · https://showheyohtaki.github.io/motion-prompt/#<id>`
+`// Motion Prompt #<id> · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#<id>`
 
-Live demo deep link: `https://showheyohtaki.github.io/motion-prompt/#<id>`.
+Live demo deep link: `https://motion-prompt.knothhe.com/#<id>`.
 
 ## Tooling
 

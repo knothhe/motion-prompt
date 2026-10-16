@@ -1,0 +1,26 @@
+// Motion Prompt #115 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#115
+//
+// 黑白 / Black and white
+// 素材包: photo (摄影风格、光线与效果) · element 19 · 分类: 色调与后期风格
+// 示例效果: 同一风景褪色，太阳和人物亮部变灰，仅通过亮度分辨形状。
+// 效果规格:
+//   - 场景 3：左侧半身像头部中心 (140, 82)、半径 28px，右侧山、房屋、树和太阳，太阳中心 (432, 54)、半径 15px。
+//   - 各色按亮度 0.2126R + 0.7152G + 0.0722B 转灰，以 140 为中心对比度乘 1.25。
+//   - 例如人物 #4D5A75→约 #4D4D4D，太阳 #F5A524→约 #B5B5B5。
+//   - 时间：0.4–1.4 秒效果渐入，保持至 4.0 秒，4.8 秒前消失；每轮 5 秒，三次方缓入缓出，约 cubic-bezier(0.65,0,0.35,1)。
+// 适用场景: 适合永恒感，或强调形状、光线与表情。
+// 标签: black and white, monochrome, b&w, grayscale, desaturated, classic
+// 尺寸: 539x208 px · 循环周期: 5 s
+// Needs: kit photo -> https://motion-prompt.knothhe.com/api/v1/kit/photo.js
+// 动态示例: https://motion-prompt.knothhe.com/#115
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 19
+// モノクロ: 色を抜き、明るさだけで見せる（コントラストを少し強める）
+CELLS[18] = cell((k, u) => {
+  const a = env(u);
+  const GRAY = mapPal(BASE, c => { const g = clamp((lum(c) - 140) * 1.25 + 140, 0, 255); return toHex([g, g, g]); });
+  stageLand(k, pal(BASE, GRAY, a));
+});

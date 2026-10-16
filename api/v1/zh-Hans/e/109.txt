@@ -1,0 +1,43 @@
+// Motion Prompt #109 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#109
+//
+// 镜头光晕 / Lens flare
+// 素材包: photo (摄影风格、光线与效果) · element 13 · 分类: 镜头与相机效果
+// 示例效果: 太阳从建筑后露出，周围出现光芒，圆点、六边形和环穿过画面中心排列。
+// 效果规格:
+//   - 场景 2：街角，建筑、树和路灯（x = 114、292、494）位于 y = 132–162 的道路后；左前人物脚位 (176, 200)，高 124px。
+//   - 太阳半径 13px，从建筑后 (428, 74) 到天空 (474, 30)。
+//   - 8 条光芒从距太阳中心 17px 到 26 或 44px，交替长 9 和 27px，琥珀色、1.6px、透明度 75%。
+//   - 太阳经中心延长线 t = 0.45、0.8、1.15、1.45、1.75、2.0 处分别为半径 7 圆、13 六边形、5 圆、22 六边形、9 圆、30 环，环线宽 3px；t = 1 为中心。
+//   - 颜色 #FFC75A 与 #FFE3A3，透明度 40–70% × 效果量。
+//   - 时间：0.4–1.4 秒效果渐入，保持至 4.0 秒，4.8 秒前消失；每轮 5 秒，三次方缓入缓出，约 cubic-bezier(0.65,0,0.35,1)。
+// 适用场景: 适合耀光、夏日阳光或电影感光线。
+// 标签: lens flare, flare, ghosting, sun flare, starburst, cinematic
+// 尺寸: 539x208 px · 循环周期: 5 s
+// Needs: kit photo -> https://motion-prompt.knothhe.com/api/v1/kit/photo.js
+// 动态示例: https://motion-prompt.knothhe.com/#109
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 13
+// レンズフレア: 建物の陰から太陽が出ると、画面の中心をはさんで反対側へ光の玉が並ぶ
+CELLS[12] = cell((k, u) => {
+  const a = env(u), sx = lerp(428, 474, a), sy = lerp(74, 30, a);
+  stageStreet(k, BASE, { sun: [sx, sy, 13, 1] });
+  const cx = CW / 2, cy = CH / 2, dx = cx - sx, dy = cy - sy;
+  k.save();
+  // 太陽の光の筋
+  k.globalAlpha = 0.75 * a; k.strokeStyle = BASE.lit; k.lineWidth = 1.6; k.lineCap = 'round';
+  for (let i = 0; i < 8; i++) { const t = i / 8 * TAU + 0.2, L = i % 2 ? 26 : 44; k.beginPath(); k.moveTo(sx + Math.cos(t) * 17, sy + Math.sin(t) * 17); k.lineTo(sx + Math.cos(t) * L, sy + Math.sin(t) * L); k.stroke(); }
+  // 光の玉: 太陽から中心を通る線の上（t = 0.45〜2.0）
+  const G = [[0.45, 7, 'c', 0.6], [0.8, 13, 'h', 0.55], [1.15, 5, 'c', 0.7], [1.45, 22, 'h', 0.4], [1.75, 9, 'c', 0.55], [2.0, 30, 'r', 0.55]];
+  for (const [t, r, kind, al] of G) {
+    const x = sx + dx * t, y = sy + dy * t;
+    k.globalAlpha = al * a;
+    if (kind === 'r') { k.strokeStyle = BASE.lit; k.lineWidth = 3; k.beginPath(); k.arc(x, y, r, 0, TAU); k.stroke(); continue; }
+    k.fillStyle = kind === 'h' ? BASE.glow : BASE.lit; k.beginPath();
+    if (kind === 'h') for (let i = 0; i < 6; i++) { const t2 = i / 6 * TAU; k.lineTo(x + Math.cos(t2) * r, y + Math.sin(t2) * r); } else k.arc(x, y, r, 0, TAU);
+    k.closePath(); k.fill();
+  }
+  k.restore();
+});

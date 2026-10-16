@@ -1,0 +1,35 @@
+// Motion Prompt #070 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#070
+//
+// 加载转圈 / Spinner
+// 素材包: ui (UI 组件名称) · element 22 · 分类: 导航与状态
+// 示例效果: 点击发送，卡片蒙白、中央蓝弧旋转，完成后变勾号并淡出。
+// 效果规格:
+//   - 542×191 卡片，周期 4.5 秒。1.0 秒点击底部中央发送按钮 120×40。
+//   - 1.05–1.2 秒线性淡入覆盖全卡、透明度 0.78 的白色遮罩和转圈。
+//   - 中心 (271, 92)，浅色圆环半径 26、粗 6，上层蓝弧 243° 即 1.35π，圆端，每秒 1.3 圈即 468°/s。
+//   - 2.95–3.05 秒转圈淡出；2.95–3.2 秒半径 28 的蓝圆白勾以 easeOutCubic 从 0.7 放大至 1。
+//   - 3.75–4.0 秒全部线性淡出。
+// 适用场景: 适合发送或保存等时长未知的短暂等待。
+// 标签: spinner, loading, loader, activity-indicator, progress-circle, busy
+// 尺寸: 542x191 px · 循环周期: 4.5 s
+// Needs: kit ui -> https://motion-prompt.knothhe.com/api/v1/kit/ui.js
+// 动态示例: https://motion-prompt.knothhe.com/#070
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 22
+// 22 スピナー（Spinner）
+CELLS[21] = ui((w, h, t) => {
+  const load = seg(t, 1.05, 1.2) * (1 - seg(t, 2.95, 3.05));
+  const done = seg(t, 2.95, 3.15) * (1 - seg(t, 3.75, 4.0));
+  pageLines(24, 18, 494); strokeRR(24, 90, 494, 34, 7, C.line2, 1.5);
+  fillRR(w / 2 - 60, 140, 120, 40, 8, C.blue); text('送信', w / 2, 160, 16, '#fff', 600, 'center');
+  const ov = Math.max(load, done);
+  if (ov > 0) {
+    X.fillStyle = `rgba(255,255,255,${.78 * ov})`; X.fillRect(0, 0, w, h);
+    if (load > 0) { X.save(); X.globalAlpha = load; ring(w / 2, 92, 26, '#e3e8f5', 6); X.beginPath(); const a0 = t * Math.PI * 2 * 1.3; X.arc(w / 2, 92, 26, a0, a0 + Math.PI * 1.35); X.strokeStyle = C.blue; X.lineWidth = 6; X.lineCap = 'round'; X.stroke(); X.restore(); }
+    if (done > 0) { X.save(); X.globalAlpha = done; const s = .7 + .3 * eo(seg(t, 2.95, 3.2)); X.translate(w / 2, 92); X.scale(s, s); circle(0, 0, 28, C.blue); check(0, 0, 11, '#fff', 4); X.restore(); }
+  }
+  pointer([[.3, w + 30, h + 30], [.95, w / 2 + 6, 166], [1.5, w / 2 + 6, 166], [2.2, w + 30, h + 30]], [1.0], t);
+});

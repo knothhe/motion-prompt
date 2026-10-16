@@ -1,10 +1,10 @@
 # Motion Prompt
 
-**English** | [日本語](README.ja.md)
+**English** | [日本語](README.ja.md) | [简体中文](README.zh-Hans.md)
 
 > 日本語の説明は [README.ja.md](README.ja.md) にあります。
-> 中文用户：名称一览目前只有英文和日文。把 [`make-your-own/prompts/en/01-translate.md`](make-your-own/prompts/en/01-translate.md) 交给 Claude Code、Codex 等编程 AI，就可以制作中文或其他语言的版本。
-> Other languages: the name lists are in English and Japanese for now. Give [`make-your-own/prompts/en/01-translate.md`](make-your-own/prompts/en/01-translate.md) to a coding AI to make a version in your language.
+> 中文用户：已支持简体中文，可查看 [中文说明](README.zh-Hans.md) 或打开[中文示例库](https://motion-prompt.knothhe.com/?lang=zh-Hans)。
+> Other languages: the name lists are available in English, Japanese and Simplified Chinese. Give [`make-your-own/prompts/en/01-translate.md`](make-your-own/prompts/en/01-translate.md) to a coding AI to make a version in your language.
 
 A library of names for the things you ask an AI to make. Each name comes with a moving sample, a one-line meaning and an example of how to ask for it. Five sets are in it now, 24 names each and 120 in all: motion-graphics moves (`motion`), camera moves (`camera`), UI component names (`ui`), landing page and web effects (`lp`), and photo looks, lighting and styles (`photo`). It also comes with the prompts to make the same kind of library for your own field, in your own language.
 
@@ -12,9 +12,9 @@ A library of names for the things you ask an AI to make. Each name comes with a 
 |---|---|
 | ![Motion graphics names 01–08](assets/preview-motion.gif) | ![Camera move names 01–08](assets/preview-camera.gif) |
 
-- Gallery (every sample, moving): https://showheyohtaki.github.io/motion-prompt/
+- Gallery (every sample, moving): https://motion-prompt.knothhe.com/
 - Name lists you can read here on GitHub: [`packs/`](packs/README.md)
-- Examples from other people who share names with samples (embeds and links to their posts on X): https://showheyohtaki.github.io/motion-prompt/found.html
+- Examples from other people who share names with samples (embeds and links to their posts on X): https://motion-prompt.knothhe.com/found.html
 
 ## Why I made this
 
@@ -32,13 +32,13 @@ Shohei Ohtaki
 
 | Numbers | Pack | Names | Lists |
 |---|---|---|---|
-| 001–024 | `motion`: motion graphics moves | 24 | [English](packs/motion/README.md) · [日本語](packs/motion/README.ja.md) |
-| 025–048 | `camera`: camera moves and transitions | 24 | [English](packs/camera/README.md) · [日本語](packs/camera/README.ja.md) |
-| 049–072 | `ui`: UI component names | 24 | [English](packs/ui/README.md) · [日本語](packs/ui/README.ja.md) |
-| 073–096 | `lp`: landing page and web effects | 24 | [English](packs/lp/README.md) · [日本語](packs/lp/README.ja.md) |
-| 097–120 | `photo`: photo looks, lighting and styles | 24 | [English](packs/photo/README.md) · [日本語](packs/photo/README.ja.md) |
+| 001–024 | `motion`: motion graphics moves | 24 | [English](packs/motion/README.md) · [日本語](packs/motion/README.ja.md) · [简体中文](packs/motion/README.zh-Hans.md) |
+| 025–048 | `camera`: camera moves and transitions | 24 | [English](packs/camera/README.md) · [日本語](packs/camera/README.ja.md) · [简体中文](packs/camera/README.zh-Hans.md) |
+| 049–072 | `ui`: UI component names | 24 | [English](packs/ui/README.md) · [日本語](packs/ui/README.ja.md) · [简体中文](packs/ui/README.zh-Hans.md) |
+| 073–096 | `lp`: landing page and web effects | 24 | [English](packs/lp/README.md) · [日本語](packs/lp/README.ja.md) · [简体中文](packs/lp/README.zh-Hans.md) |
+| 097–120 | `photo`: photo looks, lighting and styles | 24 | [English](packs/photo/README.md) · [日本語](packs/photo/README.ja.md) · [简体中文](packs/photo/README.zh-Hans.md) |
 
-Each list gives the number, the name, what it means and an example of how to ask an AI for it. The same names move in the [gallery](https://showheyohtaki.github.io/motion-prompt/).
+Each list gives the number, the name, what it means and an example of how to ask an AI for it. The same names move in the [gallery](https://motion-prompt.knothhe.com/).
 
 Each pack has its own look. The motion pack is dark navy with four colors. The camera pack is light gray with one blue. The ui pack is warm off-white with black and one blue, and a cursor sets each part moving. The lp pack draws a white browser window on a pale gray desk, with a vermilion accent and blue for the pictures on the page. The photo pack has no shared palette: each card is painted in the colors of its own scene, and the effect fades in and back out so you can compare. That is on purpose. What a pack has to get right is the names, not a house style.
 
@@ -49,7 +49,7 @@ Each pack has its own look. The motion pack is dark navy with four colors. The c
 With the `motion-prompt` skill installed in Claude Code or Codex, asking is enough to open this gallery. You do not need to remember names or numbers. When you are not sure what something is called, have the library opened, the way you would look a word up in a dictionary.
 
 ```sh
-npx skills add showheyohtaki/motion-prompt
+npx skills add knothhe/motion-prompt
 ```
 
 1. Ask your AI:
@@ -137,7 +137,7 @@ Read https://github.com/showheyohtaki/motion-prompt and install the motion-promp
 **With a command.** This uses the `skills` installer, which works with Claude Code, Codex and other agents that read Agent Skills:
 
 ```sh
-npx skills add showheyohtaki/motion-prompt
+npx skills add knothhe/motion-prompt
 ```
 
 **As a Claude Code plugin.**
@@ -163,7 +163,7 @@ This section is for an AI agent that received the prompt in "With a prompt".
 1. Check that Node.js 18 or later is available with `node --version`.
 2. In the user's project folder, run the command below. If it asks which agent to install for, choose the one you are.
    ```sh
-   npx skills add showheyohtaki/motion-prompt -y
+   npx skills add knothhe/motion-prompt -y
    ```
 3. If step 2 is not possible, fetch the repository and copy the folder. Copy to `.claude/skills/` if you are Claude Code and to `.agents/skills/` otherwise (or to `~/.claude/skills/` or `~/.agents/skills/` for all projects).
    ```sh
@@ -212,7 +212,7 @@ Three files make up the skill: the instructions (`SKILL.md`), notes on moving an
 
 The script makes GET requests for the text files below and nothing else. Nothing from your project is uploaded. `pick` also opens a temporary listener on your own machine (127.0.0.1) that receives only the numbers and note sent by "Send to AI" in the gallery.
 
-1. `https://showheyohtaki.github.io/motion-prompt/api/v1/`
+1. `https://motion-prompt.knothhe.com/api/v1/`
 2. if that is unreachable: `https://raw.githubusercontent.com/showheyohtaki/motion-prompt/main/api/v1/`
 
 | File | Contents |

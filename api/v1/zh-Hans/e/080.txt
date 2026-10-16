@@ -1,0 +1,42 @@
+// Motion Prompt #080 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#080
+//
+// 荧光标记动画 / Highlighter animation
+// 素材包: lp (落地页与网页动效) · element 08 · 分类: 滚动效果
+// 示例效果: 文案滚入时，关键词下半部从左到右画出黄色标记。
+// 效果规格:
+//   - 0.35–1.0 秒滚动 0→90px，1.6–2.2 秒 90→180px，3.3–4.4 秒 180→0，三次方缓入缓出。
+//   - 两行粗体 20px 文案位于页面 y = 190 和 290px，初始在视口下方。
+//   - 文字顶边超过视口高度 80%、即 134px 的触发线时，开始画关键词下的笔划。
+//   - 笔划黄色 #FFE36B，高 11，基线上方 8px 到下方 3px，在文字后方，0.8 秒内从左侧宽 0→词宽，三次方缓出。
+//   - 文字离开视口底部时隐藏并复位。
+// 适用场景: 适合阅读时强调落地页关键短语。
+// 标签: highlighter, marker, text-highlight, emphasis, scroll-reveal, copy, underline
+// 尺寸: 539x208 px · 循环周期: 4.8 s
+// Needs: kit lp -> https://motion-prompt.knothhe.com/api/v1/kit/lp.js
+// 动态示例: https://motion-prompt.knothhe.com/#080
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 08
+// 08 マーカーアニメーション（大事な言葉が画面に入ると、蛍光ペンの線が左から引かれる）
+CELLS[7] = (k, w, h, u) => {
+  frame(k);
+  const SY = t => steps([[0.35, 0], [1.0, 90], [1.6, 90], [2.2, 180], [3.3, 180], [4.4, 0]], t), y = SY(u);
+  const LINE = VH * 0.8, DUR = 0.8, MARK = '#FFE36B', F = `800 20px ${JP}`;
+  const rows = [[190, ['毎日のごはんが', 'たった10分で', '作れる。']], [290, ['はじめてでも', '失敗しないレシピ', 'だけ。']]];
+  view(k, () => {
+    k.save(); k.translate(0, -y);
+    txt(k, '忙しい人のための', 70, 50, `700 14px ${JP}`, C.sub); txt(k, '台所の新しい相棒', 70, 80, `800 24px ${JP}`, C.ink);
+    bars(k, 70, 96, 330, 4, C.faint, 6, 12, 0.8);
+    for (const [base, parts] of rows) {
+      k.font = F; const ws = parts.map(s => k.measureText(s).width); let x = (VW - ws.reduce((a, b) => a + b, 0)) / 2;
+      const t0 = enteredAt(SY, base - 20, LINE, u), q = t0 === null ? 0 : eOut(P(u, t0, t0 + DUR));
+      if (q > 0) { k.fillStyle = MARK; k.fillRect(x + ws[0], base - 8, ws[1] * q, 11); }
+      parts.forEach((s, i) => { txt(k, s, x, base, F, i === 1 ? C.ink : '#4A5368'); x += ws[i]; });
+      bars(k, 110, base + 22, 291, 2, C.faint, 6, 12, 0.7);
+    }
+    k.restore();
+    sbar(k, y / 180, 0.5);
+  });
+};

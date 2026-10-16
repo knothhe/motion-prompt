@@ -1,0 +1,41 @@
+// Motion Prompt #069 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#069
+//
+// 骨架屏 / Skeleton screen
+// 素材包: ui (UI 组件名称) · element 21 · 分类: 导航与状态
+// 示例效果: 点击重新加载后列表变为带扫光的灰块，加载结束恢复内容。
+// 效果规格:
+//   - 542×191 卡片，周期 4.5 秒。两行列表各含 96×56 图片和三行文字，1.0 秒点击右上刷新。
+//   - 1.05–1.2 秒线性切换为相同尺寸与位置的 #e9e7e5 灰色圆角块。
+//   - 白色光带宽 160，边缘透明、中间透明度 0.75，每 0.9 秒从 x = −200 扫到 742，仅绘制在灰块上。
+//   - 3.0–3.3 秒线性恢复内容。
+// 适用场景: 适合加载需要时间的列表或卡片，让等待时布局可见。
+// 标签: skeleton, skeleton-screen, placeholder, shimmer, loading, ghost-content
+// 尺寸: 542x191 px · 循环周期: 4.5 s
+// Needs: kit ui -> https://motion-prompt.knothhe.com/api/v1/kit/ui.js
+// 动态示例: https://motion-prompt.knothhe.com/#069
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 21
+// 21 スケルトン（Skeleton screen）
+CELLS[20] = ui((w, h, t) => {
+  const sk = seg(t, 1.05, 1.2) * (1 - seg(t, 3.0, 3.3));
+  ring(w - 40, 26, 14, C.line2, 1.8); X.beginPath(); X.arc(w - 40, 26, 7, -Math.PI * .1, Math.PI * 1.4); X.strokeStyle = '#666'; X.lineWidth = 2.2; X.stroke();
+  bar(24, 20, 160, C.line2, 12);
+  for (let k = 0; k < 2; k++) {
+    const y = 56 + k * 66;
+    X.save(); X.globalAlpha = 1 - sk; mountains(24, y, 96, 56, k); bar(136, y + 6, 200, C.ink, 11); bar(136, y + 26, 340); bar(136, y + 42, 260); X.restore();
+    if (sk > 0) {
+      X.save(); X.globalAlpha = sk; const g = '#e9e7e5';
+      fillRR(24, y, 96, 56, 8, g); fillRR(136, y + 4, 200, 14, 7, g); fillRR(136, y + 26, 340, 10, 5, g); fillRR(136, y + 42, 260, 10, 5, g);
+      // 光が横に流れる
+      const sx = -200 + ((t - 1.1) % 0.9) / 0.9 * (w + 400);
+      X.globalCompositeOperation = 'source-atop';
+      const gr = X.createLinearGradient(sx - 80, 0, sx + 80, 0); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.5, 'rgba(255,255,255,.75)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+      X.fillStyle = gr; X.fillRect(0, y - 2, w, 64);
+      X.restore();
+    }
+  }
+  pointer([[.3, w + 30, h + 30], [.95, w - 38, 30], [1.4, w - 38, 30], [2.1, w + 30, h + 30]], [1.0], t);
+});

@@ -78,13 +78,65 @@
     },
   };
 
+  I18N['zh-Hans'] = {
+  "title": "案例｜Motion Prompt",
+  "skip": "跳转到案例列表",
+  "navLabel": "网站导航",
+  "navGallery": "示例库",
+  "navFound": "案例",
+  "langLabel": "语言",
+  "themeToDark": "切换到深色模式",
+  "themeToLight": "切换到浅色模式",
+  "eyebrow": "发现的案例",
+  "h1": "用术语与示例建立共同语言的人们",
+  "lead": "这里收集了创作者分享的帖子，通过动态示例或速查表介绍与 AI 沟通时使用的术语。各自的领域、语言与风格各不相同。所选帖子包含作者自行制作的示例，内容及权利归原作者所有。",
+  "leadNote": "被收录不代表作者支持本站。介绍文字由本站撰写。",
+  "noteH": "关于嵌入内容",
+  "noteP": "本页通过 X（原 Twitter）的嵌入功能展示帖子。打开页面时，内容会从 X 服务器加载并使用 X 的 Cookie。X 可能记录浏览行为并用于广告。嵌入时已设置请求不用于个性化的 dnt 选项。",
+  "notePrivacy": "X 隐私政策",
+  "noteCookies": "X 如何使用 Cookie",
+  "listH": "案例列表",
+  "loadListFailed": "列表加载失败。",
+  "count": "{n} 条帖子",
+  "postLang": {
+    "ja": "日语",
+    "en": "英语",
+    "zh-Hans": "简体中文"
+  },
+  "postLangLabel": "帖子语言：{l}",
+  "viewOnX": "在 X 上查看",
+  "viewOnXLabel": "在 X 上查看 {a} 的帖子",
+  "loading": "加载中…",
+  "gone": "无法显示此帖子，可能已被删除。",
+  "failed": "无法从 X 加载，可能被内容拦截器阻止。仍可点击“在 X 上查看”打开原帖。",
+  "shown": "已显示 {a} 的帖子",
+  "moreH": "分享你发现的案例",
+  "recH": "推荐帖子（欢迎自荐）",
+  "recP": "发现分享术语与示例的帖子后，可以通过 GitHub Issue 告诉我们，也欢迎推荐自己的帖子。本站仅嵌入并链接原帖，不复制图片或视频。",
+  "recLink": "推荐案例（GitHub Issue）",
+  "rmH": "申请移除帖子",
+  "rmP": "如果希望移除你的帖子或更正介绍，请使用 Issue 表单。确认后会及时处理。",
+  "rmLink": "申请删除或更正（GitHub Issue）",
+  "author": "作者",
+  "authorName": "Shohei Ohtaki",
+  "whyLink": "创作缘由",
+  "makeLink": "为自己的领域和语言制作示例",
+  "addLink": "添加你的领域术语",
+  "listLink": "术语列表（GitHub）",
+  "removeP1": "如需删除或更正内容，请通过 ",
+  "removeLink": "GitHub Issue 表单",
+  "removeP2": " 提交。确认后会及时处理。",
+  "thanks1": "展示动态示例并提供可复制提示词的形式，灵感来自",
+  "thanks2": "。感谢分享。"
+};
+
   var store = {
     get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) { /* private mode etc. */ } },
     del: function (k) { try { localStorage.removeItem(k); } catch (e) { /* ignore */ } },
   };
   var darkQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : { matches: false };
-  var state = { lang: root.lang === 'en' ? 'en' : 'ja', data: null };
+  var state = { lang: I18N[root.lang] ? root.lang : 'en', data: null };
   var cards = [];   // { item, el, box, status, shown, token }
 
   function t(key, vars) {
@@ -148,7 +200,7 @@
     return loadWidgets().then(function (tw) {
       if (c.token !== token) return;
       return tw.widgets.createTweet(c.item.id, c.box, {
-        lang: state.lang, theme: isDark() ? 'dark' : 'light', dnt: true, conversation: 'none', align: 'center',
+        lang: state.lang === 'zh-Hans' ? 'zh-cn' : state.lang, theme: isDark() ? 'dark' : 'light', dnt: true, conversation: 'none', align: 'center',
       }).then(function (el) {
         if (c.token !== token) return;
         if (el) { setStatus(c, null); c.el.classList.remove('is-gone'); }
@@ -235,7 +287,7 @@
       });
     });
     $$('[data-lang]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false'); });
-    $$('[data-href-' + lang + ']').forEach(function (a) { a.href = a.getAttribute('data-href-' + lang); });
+    $$('[data-href-en]').forEach(function (a) { a.href = a.getAttribute('data-href-' + lang) || a.getAttribute('data-href-en'); });
     applyTheme();
   }
   function applyTheme() { $('#theme').setAttribute('aria-label', t(isDark() ? 'themeToLight' : 'themeToDark')); }
@@ -244,6 +296,8 @@
       var lang = b.getAttribute('data-lang');
       if (lang === state.lang) return;
       state.lang = lang;
+      var q = new URLSearchParams(location.search);
+      if (q.has('lang')) { q.set('lang', lang); history.replaceState(null, '', location.pathname + '?' + q.toString() + location.hash); }
       store.set('mp-lang', lang);
       applyText();
       if (state.data) build();  // rebuild redraws the embeds in the new language

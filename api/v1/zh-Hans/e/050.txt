@@ -1,0 +1,35 @@
+// Motion Prompt #050 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#050
+//
+// 侧边抽屉 / Drawer (Off-canvas)
+// 素材包: ui (UI 组件名称) · element 02 · 分类: 展开与叠层
+// 示例效果: 点击“菜单”从左侧滑入高面板，点击外侧收回。
+// 效果规格:
+//   - 542×191 卡片，周期 4.5 秒。1.0 秒点击左上 110×34 的“菜单”按钮。
+//   - a 在 1.0–1.38 秒以 easeOutCubic 从 0→1；全卡遮罩 rgba(18,20,28)，透明度 0.36·a。
+//   - 白色面板宽 210、满卡高，x = −210 + 210·a，从左边滑入；阴影模糊 22、透明度 0.25。
+//   - 顶部头像半径 14 与名称，下方四行菜单间隔 32px，第一行浅蓝选中。
+//   - 3.3 秒在外侧 (420, 120) 点击，a 乘以 3.3–3.65 秒的 (1 − easeInOutCubic)，面板滑回。
+// 适用场景: 适合按需显示导航或筛选，尤其是移动端。
+// 标签: drawer, off-canvas, offcanvas, side-menu, navigation-drawer, sheet, sidebar, slide-in
+// 尺寸: 542x191 px · 循环周期: 4.5 s
+// Needs: kit ui -> https://motion-prompt.knothhe.com/api/v1/kit/ui.js
+// 动态示例: https://motion-prompt.knothhe.com/#050
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 02
+// 02 ドロワー（Drawer (Off-canvas)）
+CELLS[1] = ui((w, h, t) => {
+  strokeRR(24, 14, 110, 34, 8, C.line2, 1.5); text('メニュー', 79, 31, 15, '#555', 600, 'center');
+  bar(160, 26, 140, C.line2, 11); pageLines(24, 70, 494); fillRR(24, 138, 494, 42, 8, C.block);
+  const a = eo(seg(t, 1.0, 1.38)) * (1 - eio(seg(t, 3.3, 3.65)));
+  if (a > 0) {
+    X.fillStyle = `rgba(18,20,28,${.36 * a})`; X.fillRect(0, 0, w, h);
+    const pw = 210, px = -pw + pw * a;
+    shadowed(() => { X.fillStyle = '#fff'; X.fillRect(px, 0, pw, h); }, 22, 0, .25);
+    circle(px + 34, 32, 14, C.mb); bar(px + 58, 27, 100, C.line2, 10);
+    for (let i = 0; i < 4; i++) { const y = 62 + i * 32; if (i === 0) fillRR(px + 12, y - 2, pw - 24, 28, 6, C.lb); fillRR(px + 22, y + 5, 14, 14, 3, i === 0 ? C.blue : C.line2); bar(px + 46, y + 7, 90 + (i % 2) * 30, i === 0 ? C.sb : C.line); }
+  }
+  pointer([[.3, w + 30, h + 30], [.95, 70, 34], [1.6, 70, 34], [3.0, 420, 120], [3.6, 420, 120], [4.2, w + 30, h + 30]], [1.0, 3.3], t);
+});

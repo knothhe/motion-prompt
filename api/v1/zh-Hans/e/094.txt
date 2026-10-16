@@ -1,0 +1,38 @@
+// Motion Prompt #094 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#094
+//
+// 跑马灯 / Marquee
+// 素材包: lp (落地页与网页动效) · element 22 · 分类: 加载、导航与循环动效
+// 示例效果: 深蓝色带内，大号服务名和橙点持续无缝左移。
+// 效果规格:
+//   - 色带高 58、深蓝、满视口宽；文字白色、30px、特粗、字距 1px。
+//   - 一组四词 WEB DESIGN / BRANDING / MOTION / UI/UX，间隔 64px，各间隔有半径 6 的橙点。
+//   - 每周期 4.8 秒匀速左移一组宽度，约 881px，测量组宽并以组宽循环偏移，无可见接缝。
+//   - 重复整组直到填满视口。
+// 适用场景: 适合充满动感地展示服务、客户标志或标语。
+// 标签: marquee, ticker, infinite-loop, scrolling-text, logo-strip, band, loop
+// 尺寸: 539x208 px · 循环周期: 4.8 s
+// Needs: kit lp -> https://motion-prompt.knothhe.com/api/v1/kit/lp.js
+// 动态示例: https://motion-prompt.knothhe.com/#094
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 22
+// 22 マーキー（文字の帯が、途切れずに横へ流れ続ける）
+CELLS[21] = (k, w, h, u) => {
+  frame(k);
+  const WORDS = ['WEB DESIGN', 'BRANDING', 'MOTION', 'UI/UX'], F = `800 30px ${EN}`, GAPW = 64;
+  view(k, () => {
+    bars(k, 34, 20, 180, 1, C.ink, 10); bars(k, 34, 38, 300, 1);
+    k.fillStyle = C.ink; k.fillRect(0, 58, VW, 58);
+    k.font = F; k.letterSpacing = '1px'; const ws = WORDS.map(s => k.measureText(s).width); k.letterSpacing = '0px';
+    const unit = ws.reduce((a, b) => a + b + GAPW, 0);
+    let x = -mod(u / CYC, 1) * unit;                 // 1周期で1組ぶん左へ
+    for (let rep = 0; x < VW; rep++) WORDS.forEach((s, i) => {
+      txt(k, s, x, 88, F, '#fff', 'left', 'middle', '1px');
+      k.fillStyle = C.acc; k.beginPath(); k.arc(x + ws[i] + GAPW / 2, 88, 6, 0, 7); k.fill();
+      x += ws[i] + GAPW;
+    });
+    for (let i = 0; i < 3; i++) { k.fillStyle = C.soft; rr(k, 34 + i * 152, 130, 136, 30, 6); k.fill(); bars(k, 46 + i * 152, 142, 90, 1, C.faint); }
+  });
+};

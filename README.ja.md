@@ -1,6 +1,6 @@
 # Motion Prompt
 
-[English](README.md) | **日本語**
+[English](README.md) | **日本語** | [简体中文](README.zh-Hans.md)
 
 AIに何かを作ってもらうときに使う「名前」のライブラリです。名前の1つずつに、動く見本・一言の意味・AIへの頼み方の例が付いています。いま入っているのは、モーショングラフィックスの動き（`motion`）、カメラワーク（`camera`）、UIパーツの名前（`ui`）、LP・Webサイトの演出（`lp`）、写真の表現・光と画風（`photo`）の5つで、それぞれ24個、合わせて120個です。同じような名前の見本を、自分の分野・自分の言語で作るためのプロンプトも入っています。
 
@@ -8,9 +8,9 @@ AIに何かを作ってもらうときに使う「名前」のライブラリで
 |---|---|
 | ![モーショングラフィックスの名前 01–08](assets/preview-motion.gif) | ![カメラワークの名前 01–08](assets/preview-camera.gif) |
 
-- ギャラリー（全部の見本が動きます）: https://showheyohtaki.github.io/motion-prompt/
+- ギャラリー（全部の見本が動きます）: https://motion-prompt.knothhe.com/
 - GitHub の上でそのまま読める名前の一覧: [`packs/`](packs/README.md)
-- 名前と見本を公開しているほかの人たちの事例（X のポストの埋め込みとリンク）: https://showheyohtaki.github.io/motion-prompt/found.html
+- 名前と見本を公開しているほかの人たちの事例（X のポストの埋め込みとリンク）: https://motion-prompt.knothhe.com/found.html
 
 ## なぜ作ったか
 
@@ -34,7 +34,7 @@ AIに何かを作ってもらうときに使う「名前」のライブラリで
 | 073–096 | `lp`: LP・Webサイトの演出 | 24 | [日本語](packs/lp/README.ja.md) · [English](packs/lp/README.md) |
 | 097–120 | `photo`: 写真の表現・光と画風 | 24 | [日本語](packs/photo/README.ja.md) · [English](packs/photo/README.md) |
 
-一覧には、番号・名前・英語名・一言の意味・AIへの頼み方の例が並んでいます。同じ名前が[ギャラリー](https://showheyohtaki.github.io/motion-prompt/)で動きます。
+一覧には、番号・名前・英語名・一言の意味・AIへの頼み方の例が並んでいます。同じ名前が[ギャラリー](https://motion-prompt.knothhe.com/)で動きます。
 
 パックごとに見た目が違います。モーショングラフィックスは濃紺に4色、カメラワークは薄いグレーに青1色です。UIパーツは温かみのある白に黒と青1色で、カーソルが触れると部品が動きます。LP・Webサイトの演出は、薄いグレーの机の上に白いブラウザの窓を描き、差し色は朱、ページの中の写真には青を使います。写真の表現には共通の色がなく、カードごとにその場面の色で描き、効果がかかっては戻るので前後を見比べられます。わざとそうしています。パックがそろえるべきなのは名前であって、決まった見た目ではありません。
 
@@ -45,7 +45,7 @@ AIに何かを作ってもらうときに使う「名前」のライブラリで
 Claude Code や Codex に `motion-prompt` スキルを入れると、AIに頼むだけでこのギャラリーが開きます。名前や番号を覚えていなくてかまいません。分からないときに、辞書を引くように出してもらう使い方です。
 
 ```sh
-npx skills add showheyohtaki/motion-prompt
+npx skills add knothhe/motion-prompt
 ```
 
 1. AIに頼みます。
@@ -133,7 +133,7 @@ https://github.com/showheyohtaki/motion-prompt を読んで、motion-prompt ス�
 **コマンドで入れる。** Agent Skills に対応したエージェント（Claude Code、Codex など）で使えます。
 
 ```sh
-npx skills add showheyohtaki/motion-prompt
+npx skills add knothhe/motion-prompt
 ```
 
 **Claude Code のプラグインとして入れる。**
@@ -159,7 +159,7 @@ npx skills add showheyohtaki/motion-prompt
 1. `node --version` で Node.js 18 以上が使えることを確かめます。
 2. 利用者のプロジェクトのフォルダで、次を実行します。どのエージェントに入れるか聞かれたら、いま動いている自分自身を選びます。
    ```sh
-   npx skills add showheyohtaki/motion-prompt -y
+   npx skills add knothhe/motion-prompt -y
    ```
 3. 2 が使えない場合は、リポジトリを取得してフォルダをコピーします。コピー先は、自分が Claude Code なら `.claude/skills/`、それ以外なら `.agents/skills/` です（全プロジェクトで使うなら `~/.claude/skills/` または `~/.agents/skills/`）。
    ```sh
@@ -211,7 +211,7 @@ AI は次の順に進めます。
 
 データは静的ファイルで、次の場所から読みます。CLI はこれらを取得するだけで、あなたのプロジェクトの情報を送信しません。`pick` は手元（127.0.0.1）に一時的な受け口を開き、ギャラリーの「AIに渡す」から、選んだ番号とメモだけを受け取ります。
 
-1. `https://showheyohtaki.github.io/motion-prompt/api/v1/`
+1. `https://motion-prompt.knothhe.com/api/v1/`
 2. 1 に届かないとき: `https://raw.githubusercontent.com/showheyohtaki/motion-prompt/main/api/v1/`
 
 | ファイル | 内容 |

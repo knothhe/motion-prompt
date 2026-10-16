@@ -1,0 +1,33 @@
+// Motion Prompt #060 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#060
+//
+// 分段控件 / Segmented control
+// 素材包: ui (UI 组件名称) · element 12 · 分类: 选择与切换
+// 示例效果: 点击日、周、月，蓝色高亮滑动，下方柱形高度变化。
+// 效果规格:
+//   - 542×191 卡片，周期 4.5 秒。灰底 300×40、圆角 10，位于 (121, 12)，分三段各宽 100，日文日、周、月。
+//   - 蓝色选中块 92×32、圆角 8、阴影模糊 6，选中文字白色。
+//   - 1.0 秒周、2.1 秒月、3.3 秒日，每次以 easeInOutCubic 在 0.25 秒内滑动。
+//   - 下方 7 根柱宽 34、间隔位置 58px，第六根蓝色；高度在三组数据约 30–85、40–100、60–115 间同步以相同缓动变化。
+// 适用场景: 适合同一内容的两到四种视图切换。
+// 标签: segmented-control, segmented-button, button-group, toggle-group, switcher, view-switch
+// 尺寸: 542x191 px · 循环周期: 4.5 s
+// Needs: kit ui -> https://motion-prompt.knothhe.com/api/v1/kit/ui.js
+// 动态示例: https://motion-prompt.knothhe.com/#060
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 12
+// 12 セグメントコントロール（Segmented control）
+CELLS[11] = ui((w, h, t) => {
+  const pos = eio(seg(t, 1.0, 1.25)) + eio(seg(t, 2.1, 2.35)) - 2 * eio(seg(t, 3.3, 3.55));
+  const sx = 121, sy = 12, sw = 300, sh = 40, cw = sw / 3;
+  fillRR(sx, sy, sw, sh, 10, '#efedeb');
+  shadowed(() => fillRR(sx + 4 + pos * cw, sy + 4, cw - 8, sh - 8, 8, C.blue), 6, 2, .2);
+  ['日', '週', '月'].forEach((s, i) => { const near = 1 - clamp(Math.abs(pos - i)); text(s, sx + cw * i + cw / 2, sy + sh / 2 + 1, 17, near > .5 ? '#fff' : '#6d6b69', 700, 'center'); });
+  const sets = [[30, 55, 40, 70, 50, 85, 60], [60, 40, 90, 75, 100, 55, 80], [95, 70, 110, 60, 85, 115, 100]];
+  const fi = Math.floor(pos), fr = pos - fi, gi = Math.min(2, fi + 1);
+  X.fillStyle = C.line; X.fillRect(60, 182, 422, 1.5);
+  for (let k = 0; k < 7; k++) { const bh = lerp(sets[fi][k], sets[gi][k], eio(fr)); fillRR(72 + k * 58, 180 - bh, 34, bh, 5, k === 5 ? C.blue : C.mb); }
+  pointer([[.3, w + 30, h + 30], [.95, 276, 36], [1.6, 276, 36], [2.05, 376, 36], [2.8, 376, 36], [3.25, 176, 36], [3.7, 176, 36], [4.25, w + 30, h + 30]], [1.0, 2.1, 3.3], t);
+});

@@ -22,7 +22,7 @@
       installSkillP: 'ターミナルで実行します。入れたあとは、AIに「motion-prompt のライブラリ出して」と頼むと、このギャラリーが開きます。選んで「AIに渡す」を押すと、AIに届きます。',
       installPromptH: 'プロンプトで導入',
       installPromptP: '下の文を Claude Code や Codex に貼ると、AIがスキルを入れて使い方を教えてくれます。',
-      installPrompt: 'https://github.com/showheyohtaki/motion-prompt を読んで、motion-prompt スキルをこの環境に入れてください。入れたら、使い方を3行で教えてください。',
+      installPrompt: 'https://github.com/knothhe/motion-prompt を読んで、motion-prompt スキルをこの環境に入れてください。入れたら、使い方を3行で教えてください。',
       copy: 'コピー', copied: 'コピーしました', copyFailed: 'コピーできませんでした',
       copyCmdLabel: '導入コマンドをコピー', copyInstallLabel: '導入用のプロンプトをコピー',
       galleryH: '見本の一覧', packFilterLabel: 'パックで絞り込む', catFilterLabel: 'カテゴリで絞り込む',
@@ -81,7 +81,7 @@
       installSkillP: 'Run this in a terminal. After that, say "open the motion-prompt library" to your AI and this gallery opens. Pick what you want and press "Send to AI".',
       installPromptH: 'Install with a prompt',
       installPromptP: 'Paste the text below into Claude Code or Codex. The AI installs the skill and tells you how to use it.',
-      installPrompt: 'Read https://github.com/showheyohtaki/motion-prompt and install the motion-prompt skill in this environment. When it is installed, tell me how to use it in three lines.',
+      installPrompt: 'Read https://github.com/knothhe/motion-prompt and install the motion-prompt skill in this environment. When it is installed, tell me how to use it in three lines.',
       copy: 'Copy', copied: 'Copied', copyFailed: 'Could not copy',
       copyCmdLabel: 'Copy the install command', copyInstallLabel: 'Copy the install prompt',
       galleryH: 'Gallery', packFilterLabel: 'Filter by pack', catFilterLabel: 'Filter by category',
@@ -130,6 +130,117 @@
     },
   };
 
+  I18N['zh-Hans'] = {
+  "title": "Motion Prompt｜与 AI 沟通的创意术语库",
+  "skip": "跳转到示例库",
+  "navLabel": "网站导航",
+  "navHow": "使用方法",
+  "navFound": "案例",
+  "langLabel": "语言",
+  "themeToDark": "切换到深色模式",
+  "themeToLight": "切换到浅色模式",
+  "eyebrow": "与 AI 沟通的创意术语库",
+  "h1": "成为指挥 AI 的创意总监",
+  "lead": "收录动态图形、镜头运动、UI 组件、落地页与网页动效、摄影风格等 {n} 个术语，每个都有动态示例。复制提示词，即可将效果规格和参考实现一起交给 AI。",
+  "factMoves": "个术语",
+  "factPacks": "个素材包",
+  "factLicense": "许可证",
+  "installSkillH": "通过 skill 安装",
+  "installSkillP": "在终端运行命令。安装后，向 AI 说“打开 motion-prompt 素材库”，即可打开本页。选择需要的效果，再点击“发送给 AI”。",
+  "installPromptH": "通过提示词安装",
+  "installPromptP": "将下面的文字粘贴到 Claude Code 或 Codex，AI 会安装 skill 并说明用法。",
+  "installPrompt": "阅读 https://github.com/knothhe/motion-prompt，在当前环境安装 motion-prompt skill。安装后，用三行文字告诉我如何使用。",
+  "copy": "复制",
+  "copied": "已复制",
+  "copyFailed": "复制失败",
+  "copyCmdLabel": "复制安装命令",
+  "copyInstallLabel": "复制安装提示词",
+  "galleryH": "示例库",
+  "packFilterLabel": "按素材包筛选",
+  "catFilterLabel": "按分类筛选",
+  "all": "全部",
+  "allIn": "此素材包全部",
+  "searchLabel": "搜索示例",
+  "searchPh": "搜索名称、编号或标签",
+  "pause": "暂停",
+  "play": "播放",
+  "pauseLabel": "暂停全部示例",
+  "playLabel": "播放全部示例",
+  "count": "{n} 个术语",
+  "countOf": "{n} / {total} 个术语",
+  "empty": "没有找到。试试其他关键词或编号。",
+  "openLabel": "打开 #{id} {name} 的详情",
+  "loadFailed": "加载失败",
+  "howH": "使用方法",
+  "s1h": "请 AI 打开素材库",
+  "s1p": "向已安装 motion-prompt skill 的 AI 说“打开 motion-prompt 素材库”，示例库就会在浏览器中打开。",
+  "s2h": "边看边选",
+  "s2p": "点击喜欢的示例上的“选择”，可以选择多个。所选效果会列在屏幕底部，你也可以添加“用于开场标题”等简短备注。",
+  "s3h": "发送给 AI，再提出需求",
+  "s3p": "点击“发送给 AI”，AI 就会收到你的选择。接着告诉它“把视频开头改成这种效果”。通过 AI 打开素材库时才会显示这个按钮。",
+  "skillH": "可以这样说",
+  "skillP": "无需记住名称或编号。不确定时，让 AI 打开素材库，像查词典一样挑选。",
+  "say1": "打开 motion-prompt 素材库",
+  "say2": "有哪些镜头运动？给我看看列表。",
+  "say3": "（发送选择后）把视频开头改成这种效果",
+  "altH": "未安装 skill，或已经知道编号",
+  "altP1": "如果 AI 没有安装 skill，可以点击底部的“复制所选效果”，再将文字粘贴给它。文字中包含示例和规格链接。只需要一个效果时，也可以在详情中点击“复制提示词”。",
+  "altP2": "知道编号时，可以直接说：“使用 motion-prompt 中的 #012 和 #045”。",
+  "implH": "关于参考实现",
+  "implP": "所有示例都是仅由时间决定画面的 Canvas 2D 函数，无需外部库。支持逐帧绘制，也可用于导出视频。",
+  "author": "作者",
+  "authorName": "Shohei Ohtaki",
+  "thanks1": "展示动态示例并提供可复制提示词的形式，灵感来自",
+  "thanks2": "。感谢分享。",
+  "whyLink": "创作缘由",
+  "makeLink": "为自己的领域和语言制作示例",
+  "addLink": "添加你的领域术语",
+  "listLink": "术语列表（GitHub）",
+  "removeP1": "如需删除或更正内容，请通过 ",
+  "removeLink": "GitHub Issue 表单",
+  "removeP2": " 提交。确认后会及时处理。",
+  "dAsk": "向 AI 提问的示例",
+  "ownP": "这里展示的是示例。你也可以为自己的领域和语言制作同类术语示例。",
+  "ownLink": "制作方法与提示词（make-your-own）",
+  "dSpec": "效果规格",
+  "dUse": "适用场景",
+  "tagsLabel": "标签",
+  "promptLabel": "将复制的提示词",
+  "copyPrompt": "复制提示词",
+  "copyCode": "复制代码",
+  "showCode": "查看代码",
+  "prev": "上一个术语",
+  "next": "下一个术语",
+  "close": "关闭",
+  "kitLink": "共用辅助代码（kit/{pack}.js）",
+  "txtLink": "含规格的代码（{id}.txt）",
+  "codeLoading": "加载中…",
+  "codeFailed": "代码加载失败。",
+  "size": "{w}×{h}px，循环 {c} 秒",
+  "pick": "选择",
+  "picked": "已选择",
+  "pickLabel": "选择 #{id} {name}",
+  "unpickLabel": "移除 #{id} {name}",
+  "trayCount": "已选 {n} 个",
+  "trayWait": "AI 正在等待。选好后请点击“发送给 AI”。",
+  "trayEmpty": "点击示例的“选择”，所选效果就会出现在这里。",
+  "noteLabel": "备注（可选）",
+  "notePh": "例如：用于开场标题",
+  "send": "发送给 AI",
+  "sending": "正在发送给 AI…",
+  "copyPicked": "复制所选效果",
+  "shareUrl": "复制所选效果的分享链接",
+  "clearAll": "清空选择",
+  "pickedLive": "已选择 #{id} {name}，共 {n} 个。",
+  "unpickedLive": "已移除 #{id} {name}，共 {n} 个。",
+  "clearedLive": "已清空全部选择。",
+  "outIntro": "我在 motion-prompt 示例库中选择了以下 {n} 个效果，请用它们进行制作。",
+  "outDemo": "示例",
+  "outSpec": "规格与代码",
+  "outNote": "备注",
+  "outEnd": "使用 motion-prompt skill 的 get 命令可获取完整规格。如果未安装 skill，请读取每行“规格与代码”的链接。"
+};
+
   // ------------------------------------------------------------------ state
   var store = {
     get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -138,7 +249,7 @@
   var reduceMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
   var darkQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : { matches: false };
   var state = {
-    lang: root.lang === 'en' ? 'en' : 'ja',
+    lang: I18N[root.lang] ? root.lang : 'en',
     pack: 'all', cat: 'all', q: '',
     playing: !reduceMotion.matches,
     open: null,           // id shown in the detail view
@@ -158,8 +269,7 @@
     return s;
   }
   function names(el) {
-    var ja = state.lang === 'ja';
-    return { main: ja ? el.name.ja : el.name.en, sub: ja ? el.name.en : el.name.ja };
+    return { main: el.name[state.lang] || el.name.en, sub: state.lang === 'en' ? el.name.ja : el.name.en };
   }
   function h(tag, attrs, kids) {
     var n = document.createElement(tag);
@@ -312,7 +422,7 @@
     var p = packBy[el.pack];
     var c = p.categories.filter(function (x) { return x.slug === el.category; })[0] || {};
     return ['#' + el.id, el.id, String(+el.id), el.slug, el.pack, el.name.ja, el.name.en, el.meaning ? el.meaning.ja + ' ' + el.meaning.en : '', el.summary.ja, el.summary.en,
-      el.tags.join(' '), p.title.ja, p.title.en, c.ja || '', c.en || ''].join(' ').toLowerCase();
+      el.tags.join(' '), el.name['zh-Hans'], el.meaning && el.meaning['zh-Hans'], el.summary['zh-Hans'], p.title['zh-Hans'], c['zh-Hans'], p.title.ja, p.title.en, c.ja || '', c.en || ''].join(' ').toLowerCase();
   }
   function matches(el) {
     if (state.pack !== 'all' && el.pack !== state.pack) return false;
@@ -548,7 +658,7 @@
   // ------------------------------------------------------------------ picks (choose → copy, share, or send to the waiting agent)
   // The "pick" command of the skill opens this page with ?cb=http://127.0.0.1:<port>/?t=<token>. "Send to AI" then
   // navigates the whole tab there (a top-level GET, not fetch: an https page may not fetch from 127.0.0.1).
-  var SITE = CAT.site || 'https://showheyohtaki.github.io/motion-prompt/';
+  var SITE = CAT.site || 'https://motion-prompt.knothhe.com/';
   var PICK_KEY = 'mp-pick', PICK_CB_KEY = 'mp-pick-cb', NOTE_MAX = 300;
   var CHECK_SVG = '<svg viewBox="0 0 16 16" width="14" height="14"><path d="M3.5 8.4l3 3 6-6.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   var X_SVG = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
@@ -695,7 +805,7 @@
   $('#tray-share').addEventListener('click', function () {
     var btn = this;
     if (!state.picks.length) return;
-    copyText(SITE + '?pick=' + state.picks.join(',')).then(function (ok) { flash(btn, ok); });
+    copyText(SITE + '?lang=' + state.lang + '&pick=' + state.picks.join(',')).then(function (ok) { flash(btn, ok); });
   });
   $('#tray-clear').addEventListener('click', function () {
     state.picks = []; savePicks();
@@ -725,7 +835,7 @@
     $('#fact-count').textContent = CAT.count;
     $('#fact-packs').textContent = CAT.packs.length;
     $('#tsv-link').href = 'api/v1/' + lang + '/catalog.tsv';
-    $$('[data-href-' + lang + ']').forEach(function (a) { a.href = a.getAttribute('data-href-' + lang); });
+    $$('[data-href-en]').forEach(function (a) { a.href = a.getAttribute('data-href-' + lang) || a.getAttribute('data-href-en'); });
     $('#d-prev').setAttribute('aria-label', t('prev'));
     $('#d-next').setAttribute('aria-label', t('next'));
     $('#d-close').setAttribute('aria-label', t('close'));

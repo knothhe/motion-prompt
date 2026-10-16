@@ -1,0 +1,35 @@
+// Motion Prompt #018 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#018
+//
+// 图形转场 / Shape transition
+// 素材包: motion (动态图形动作) · element 18 · 分类: 转场与强调
+// 示例效果: 彩色色带扫过并遮住画面，移开时露出下一场景。
+// 效果规格:
+//   - 白天→夜晚→白天，每段 2.35 秒。4 条水平色带，高 52，蓝、珊瑚、黄、薄荷色，端部倾斜 80px。
+//   - 覆盖在 0.38–1.0 秒：各带前缘穿过屏幕；每条延后阶段时长的 14%，用阶段时长 58% 做三次方缓入缓出。
+//   - 1.0 秒全部覆盖时，将下方场景替换为下一场景。
+//   - 揭开在 1.12–1.75 秒：各带后缘以相同延迟与曲线跟进，露出下一场景。
+//   - 白天→夜晚从左到右，夜晚→白天镜像反向。
+// 适用场景: 适合品牌色章节切换和话题转换。
+// 标签: shape-transition, transition, wipe, bands, stripes, cover, scene-change
+// 尺寸: 539x208 px · 循环周期: 4.7 s
+// Needs: kit motion -> https://motion-prompt.knothhe.com/api/v1/kit/motion.js
+// 动态示例: https://motion-prompt.knothhe.com/#018
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 18
+// 18 シェイプトランジション（色のついた帯が画面を覆い隠し、抜けると次の画面になっている）
+CELLS[17] = abCell((k, w, h, u, a, b) => {
+  const p1 = P(u, TA - 0.12, TA + 0.5), p2 = P(u, TA + 0.62, TA + 1.25), N = 4, sk = 80;
+  SCR[p1 >= 1 ? b : a](k, w, h);
+  const cols = [C.blue, C.coral, C.yel, C.mint];
+  for (let i = 0; i < N; i++) {
+    const d = i * 0.14, e1 = eIO(clamp((p1 - d) / (1 - 0.42))), e2 = eIO(clamp((p2 - d) / (1 - 0.42)));
+    if (e1 <= 0 || e2 >= 1) continue;
+    const bh = h / N + 1, y = i * h / N, span = w + sk + 20, dir = a === 0 ? 1 : -1;
+    let xa = -sk - 10 + e2 * span, xb = -sk - 10 + e1 * span;
+    k.save(); if (dir < 0) { k.translate(w, 0); k.scale(-1, 1); }
+    k.fillStyle = cols[i]; k.beginPath(); k.moveTo(xa + sk, y); k.lineTo(xb + sk, y); k.lineTo(xb, y + bh); k.lineTo(xa, y + bh); k.closePath(); k.fill(); k.restore();
+  }
+});

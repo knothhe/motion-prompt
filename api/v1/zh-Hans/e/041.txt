@@ -1,0 +1,31 @@
+// Motion Prompt #041 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#041
+//
+// 跳切 / Jump cut
+// 素材包: camera (镜头运动与转场) · element 17 · 分类: 转场
+// 示例效果: 机位与构图不变，人物位置和时钟跳变，同一场景内跳过时间。
+// 效果规格:
+//   - 无特效直接剪切，0 帧；5 个镜头各 0.94 秒，即 4.7 ÷ 5。
+//   - 各镜头机位与构图相同，高 1.4m、朝前，背景没有像素位移。
+//   - 距 7m 的人物横向位置 −2.2→1.4→−0.4→2.4→0.6m，第 2 和第 4 镜头双臂举起。
+//   - 每个镜头内人物静止，只通过位置与姿态差表现跳变。
+//   - 右上时钟 10:02→10:17→10:41→11:06→11:30，表示同一地点省略时间。
+//   - 第 5 镜头直接切回第 1 镜头。
+// 适用场景: 适合压缩讲话或工作的停顿，加快节奏并表现时间流逝。
+// 标签: jump cut, cut, time skip, same framing, vlog, ellipsis, edit
+// 尺寸: 539x208 px · 循环周期: 9.4 s
+// Needs: kit camera -> https://motion-prompt.knothhe.com/api/v1/kit/camera.js
+// 动态示例: https://motion-prompt.knothhe.com/#041
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 17
+// 17 ジャンプカット（同じ画角で人物の位置と時刻だけ飛ぶ）
+CELLS[16] = shot((k, w, h, u) => {
+  const shots = [[-2.2, 0], [1.4, 1], [-0.4, 0], [2.4, 1], [0.6, 0]];
+  const times = ['10:02', '10:17', '10:41', '11:06', '11:30'];
+  const i = Math.min(4, Math.floor(u / (CYC / 5)));
+  const [x, arm] = shots[i];
+  world(k, w, h, cam({ y: 1.4 }), { person: { x, z: 7, armUp: !!arm } });
+  return times[i];
+});

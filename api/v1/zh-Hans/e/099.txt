@@ -1,0 +1,31 @@
+// Motion Prompt #099 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#099
+//
+// 剪影 / Silhouette
+// 素材包: photo (摄影风格、光线与效果) · element 03 · 分类: 布光与时段
+// 示例效果: 按明亮晚霞曝光，人物、建筑、路灯和树失去细节，只有天空明亮。
+// 效果规格:
+//   - 场景 1：地平线 y = 150 前的半身人物，头部中心 (270, 78)、半径 29px，无面部与头发。
+//   - 天空顶部 #FAF9F7→#FFEDC4，地平线附近 y = 92–150 为 #FFCF73 色带。
+//   - 除天空外均为 #2A2D36，远山 #4A4546，人物 #22252D。
+//   - 太阳半径 20px，x = 404，y 从 60 下沉到 128，一半被山遮住。
+//   - 右上角曝光 ±0.0EV→−2.0EV。
+//   - 时间：0.4–1.4 秒效果渐入，保持至 4.0 秒，4.8 秒前消失；每轮 5 秒，三次方缓入缓出，约 cubic-bezier(0.65,0,0.35,1)。
+// 适用场景: 适合夕阳或亮窗前用轮廓与姿态表达画面。
+// 标签: silhouette, backlit, sunset, contre-jour, black shape, underexposed
+// 尺寸: 539x208 px · 循环周期: 5 s
+// Needs: kit photo -> https://motion-prompt.knothhe.com/api/v1/kit/photo.js
+// 动态示例: https://motion-prompt.knothhe.com/#099
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 03
+// シルエット: 露出を明るい空に合わせると、人物も建物も木も黒い形だけになる
+CELLS[2] = cell((k, u) => {
+  const a = env(u), INK = '#2A2D36';
+  const SILH = mapPal(BASE, () => INK);
+  Object.assign(SILH, { sky: '#FFEDC4', sky2: '#FFCF73', far: '#4A4546', sun: BASE.sun, glow: BASE.glow });
+  stagePortrait(k, pal(BASE, SILH, a), { sun: [404, lerp(60, 128, a), 20, a] });
+  bust(k, PX, PY, PR, mixc(BASE.person, '#22252D', a));
+  hud(k, `${(-2 * a).toFixed(1).replace('-0.0', '±0.0')} EV`);
+});

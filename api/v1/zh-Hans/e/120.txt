@@ -1,0 +1,42 @@
+// Motion Prompt #120 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#120
+//
+// 双重曝光 / Double exposure
+// 素材包: photo (摄影风格、光线与效果) · element 24 · 分类: 色调与后期风格
+// 示例效果: 背景变白，山、房屋、树与太阳缩小后只显示在半身像内部。
+// 效果规格:
+//   - 场景 3：左侧半身像头部中心 (140, 82)、半径 28px，右侧山、房屋、树和太阳，太阳中心 (432, 54)、半径 15px。
+//   - 半身像外背景为白色 #FFFFFF。
+//   - 半身像内放同一风景的 0.7 倍版本，太阳在头部右上，山脊穿过颈部。
+//   - 内部天空 #D3DBE6，山 #9AA8BD 与 #76869F，地面 #55647E，树 #3F4C66。
+//   - 过渡时按效果量将双重曝光叠在原图上。
+//   - 时间：0.4–1.4 秒效果渐入，保持至 4.0 秒，4.8 秒前消失；每轮 5 秒，三次方缓入缓出，约 cubic-bezier(0.65,0,0.35,1)。
+// 适用场景: 适合将人物与地点、回忆或内心世界联系的海报封面。
+// 标签: double exposure, multiple exposure, blend, silhouette, surreal, composite
+// 尺寸: 539x208 px · 循环周期: 5 s
+// Needs: kit photo -> https://motion-prompt.knothhe.com/api/v1/kit/photo.js
+// 动态示例: https://motion-prompt.knothhe.com/#120
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 24
+// 二重露光: 背景が白く飛び、胸像の形の中にだけ丘と家と木と太陽が写り込む
+CELLS[23] = cell((k, u) => {
+  const a = env(u);
+  const DX = Object.assign({}, BASE, { sky: '#D3DBE6', sky2: '#D3DBE6', far: '#9AA8BD', mid: '#76869F', ground: '#55647E', bld: '#E8ECF2', edge: '#55647E', win: '#9AA8BD', winOff: '#9AA8BD', tree: '#3F4C66', trunk: '#3F4C66' });
+  const draw = kk => {
+    kk.fillStyle = '#FFFFFF'; kk.fillRect(0, 0, CW, CH);
+    kk.save(); bustPath(kk, QX, QY, QR); kk.clip();
+    // 風景を0.7倍にして、太陽が頭の右上、丘の稜線が首のあたりに来るように置く
+    kk.translate(QX, QY); kk.scale(0.7, 0.7); kk.translate(-415, -77);
+    kk.fillStyle = DX.sky; kk.fillRect(0, -200, CW * 2, CH * 3);
+    stageLand(kk, DX, { person: false });
+    kk.fillStyle = DX.ground; kk.fillRect(-CW, 200, CW * 3, CH * 3);
+    kk.restore();
+  };
+  if (a >= 0.999) { draw(k); return; }   // 効果が入りきったら直接描く（拡大表示でも輪郭がくっきり）
+  stageLand(k, BASE);
+  if (a < 0.002) return;
+  const [L, kl] = layer('dx'); draw(kl);   // 入り・戻りの途中は、別の面に描いて重ねる
+  k.save(); k.globalAlpha = a; k.drawImage(L, 0, 0); k.restore();
+});

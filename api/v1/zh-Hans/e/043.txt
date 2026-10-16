@@ -1,0 +1,34 @@
+// Motion Prompt #043 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#043
+//
+// 甩镜转场 / Whip pan
+// 素材包: camera (镜头运动与转场) · element 19 · 分类: 转场
+// 示例效果: 相机快速横甩，在条纹模糊最强时替换场景。
+// 效果规格:
+//   - 1.7–2.5 秒转场，共 0.8 秒；前 0.4 秒旧镜头甩出，后 0.4 秒新镜头甩入并停稳。
+//   - 前半旧镜头偏航 0→+0.45rad，约 26°；后半新镜头 −0.45rad→0，均二次方缓入缓出。
+//   - 进度 50% 时直接替换，由最强模糊遮住切点。
+//   - 模糊为 30fps 下分布于 ±1.6 帧内的 9 次渲染平均。
+//   - 相机高 1.4m，除甩动外固定；A 中人物和 B 中汽车与城市均不动。
+//   - 每 4.7 秒交替 A→B、B→A，往返 9.4 秒，右上角显示方向。
+// 适用场景: 适合保持动势地切换地点或话题。
+// 标签: whip pan, swish pan, motion blur, fast pan, transition, energy
+// 尺寸: 539x208 px · 循环周期: 9.4 s
+// Needs: kit camera -> https://motion-prompt.knothhe.com/api/v1/kit/camera.js
+// 动态示例: https://motion-prompt.knothhe.com/#043
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 19
+// 19 ホイップパン（ブレで次の場面へ）
+CELLS[18] = shot(abCell((k, w, h, u, A, B) => {
+  const t0 = 1.7, t1 = 2.5;
+  const at = (kk, s) => {   // s: 0..1 の進み。前半 A を右へ振り、後半 B が左から止まる
+    if (s < .5) world(kk, w, h, cam({ y: 1.4, yaw: eIOs(s * 2) * 0.45 }), A === sceneA ? { person: { x: -0.6, z: 7 } } : SB);
+    else world(kk, w, h, cam({ y: 1.4, yaw: -(1 - eIOs((s - .5) * 2)) * 0.45 }), B === sceneA ? { person: { x: -0.6, z: 7 } } : SB);
+  };
+  if (u < t0) return A(k, w, h);
+  if (u > t1) return B(k, w, h);
+  const s = P(u, t0, t1), ds = 1 / FPS / (t1 - t0);
+  mblur(k, at, clamp(s - ds * 1.6), clamp(s + ds * 1.6), 9);
+}));

@@ -5,28 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Motion Prompt｜AIに頼むための「名前」のライブラリ</title>
 <meta name="description" content="AIに何かを作ってもらうときに使う「名前」のライブラリです。モーショングラフィックス、カメラワーク、UIパーツ、LP・Webサイトの演出、写真の表現の名前に、動く見本・一言の意味・頼み方の例が付いています。MITライセンス。">
-<link rel="canonical" href="https://showheyohtaki.github.io/motion-prompt/">
+<link rel="canonical" href="https://motion-prompt.knothhe.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Motion Prompt">
 <meta property="og:title" content="Motion Prompt｜AIに頼むための「名前」のライブラリ">
 <meta property="og:description" content="AIを指揮するクリエイティブディレクターへ。モーショングラフィックス、カメラワーク、UIパーツ、LP・Webサイトの演出、写真の表現の名前を、動く見本つきで並べました。">
-<meta property="og:url" content="https://showheyohtaki.github.io/motion-prompt/">
-<meta property="og:image" content="https://showheyohtaki.github.io/motion-prompt/assets/og.png">
+<meta property="og:url" content="https://motion-prompt.knothhe.com/">
+<meta property="og:image" content="https://motion-prompt.knothhe.com/assets/og.png">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:creator" content="@showheyohtaki">
-<meta name="twitter:image" content="https://showheyohtaki.github.io/motion-prompt/assets/og.png">
+<meta name="twitter:image" content="https://motion-prompt.knothhe.com/assets/og.png">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <script>
 /* Apply the saved theme and language before first paint. */
 (function () {
-  var d = document.documentElement, t = null, l = null, m = /[?&]lang=(ja|en)(?:&|$)/.exec(location.search);
+  var d = document.documentElement, t = null, l = null, m = /[?&]lang=(ja|en|zh-Hans)(?:&|$)/.exec(location.search);
   try { t = localStorage.getItem('mp-theme'); l = localStorage.getItem('mp-lang'); } catch (e) {}
   if (m) l = m[1]; /* ?lang= (set when an agent opens the gallery) wins for this visit */
   if (t === 'light' || t === 'dark') d.setAttribute('data-theme', t);
-  if (l !== 'ja' && l !== 'en') l = /^ja\b/i.test(navigator.language || 'ja') ? 'ja' : 'en';
+  if (l !== 'ja' && l !== 'en' && l !== 'zh-Hans') {
+    var browserLang = navigator.language || 'en';
+    l = /^zh(?:$|-(?:CN|SG|MY|Hans)\b)/i.test(browserLang) ? 'zh-Hans' : /^ja\b/i.test(browserLang) ? 'ja' : 'en';
+  }
   d.lang = l;
 })();
 </script>
@@ -45,6 +49,7 @@
       <div class="seg" role="group" aria-label="言語" data-t-attr="aria-label:langLabel">
         <button type="button" class="seg-b" data-lang="ja" aria-pressed="true" aria-label="日本語">JA</button>
         <button type="button" class="seg-b" data-lang="en" aria-pressed="false" aria-label="English">EN</button>
+        <button type="button" class="seg-b" data-lang="zh-Hans" aria-pressed="false" aria-label="简体中文">简体中文</button>
       </div>
       <button type="button" class="icon-b" id="theme" aria-label="ダークモードに切り替える">
         <svg class="i-moon" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M16.5 12.3A7 7 0 0 1 7.7 3.5a.6.6 0 0 0-.8-.7 7.6 7.6 0 1 0 10.3 10.3.6.6 0 0 0-.7-.8z" fill="currentColor"/></svg>
@@ -71,7 +76,7 @@
         <h2 class="install-h" data-t="installSkillH">スキルで導入</h2>
         <p class="install-p" data-t="installSkillP">ターミナルで実行します。入れたあとは、AIに「motion-prompt のライブラリ出して」と頼むと、このギャラリーが開きます。選んで「AIに渡す」を押すと、AIに届きます。</p>
         <div class="copyfield">
-          <code id="cmd">npx skills add showheyohtaki/motion-prompt</code>
+          <code id="cmd">npx skills add knothhe/motion-prompt</code>
           <button type="button" class="btn btn-s" data-copy="#cmd" data-t="copy" data-t-attr="aria-label:copyCmdLabel" aria-label="導入コマンドをコピー">コピー</button>
         </div>
       </div>

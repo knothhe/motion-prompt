@@ -1,0 +1,25 @@
+// Motion Prompt #025 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#025
+//
+// 水平摇镜 / Pan
+// 素材包: camera (镜头运动与转场) · element 01 · 分类: 镜头运动
+// 示例效果: 镜头原地左右转动，远近图层以相同角度横移。
+// 效果规格:
+//   - 机位固定，高 1.5m，仅偏航 −0.32→+0.32rad，即 −18°→+18°，总计约 37°。
+//   - 0.5–3.4 秒旋转，持续 2.9 秒，三次方缓入缓出，约 cubic-bezier(0.65,0,0.35,1)。
+//   - 约 1.8m 高的人物站在前方 8m，画面中从右向左移动。
+//   - 无视差：山、建筑、树与人物角位移相同，539×208 卡片的焦距为 330px。
+//   - 3.4–4.2 秒停留，最后 0.5 秒交叉淡化回起点，每轮 4.7 秒。
+//   - 右上角以整数显示角度 −18°→+18°。
+// 适用场景: 适合展示宽阔场景，或在场景两侧之间转移注意力。
+// 标签: pan, panning, yaw, rotate, horizontal, camera move, reveal
+// 尺寸: 539x208 px · 循环周期: 9.4 s
+// Needs: kit camera -> https://motion-prompt.knothhe.com/api/v1/kit/camera.js
+// 动态示例: https://motion-prompt.knothhe.com/#025
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 01
+// 01 パン: 回転なので全ての層が同じだけ横に流れる
+CELLS[0] = shot(camCell((k, w, h, p) => world(k, w, h, cam({ yaw: lerp(-0.32, 0.32, p) }), { person: { x: 0, z: 8 } }),
+  p => `${Math.round(lerp(-0.32, 0.32, p) * 57.3)}°`.replace(/^(\d)/, '+$1')));

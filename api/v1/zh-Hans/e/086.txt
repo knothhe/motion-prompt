@@ -1,0 +1,42 @@
+// Motion Prompt #086 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#086
+//
+// 下划线动画 / Underline animation
+// 素材包: lp (落地页与网页动效) · element 14 · 分类: 悬停与点击交互
+// 示例效果: 光标下的橙色下划线从左增长，移开后向右缩走。
+// 效果规格:
+//   - 三条粗体 20px 链接，间隔 56，光标从左到右各停约 1 秒，点击区左右比文字各多 6px。
+//   - 橙色下划线粗 3，距基线下方 8px。
+//   - 悬停时 0.3 秒三次方缓出，从左端宽 0→100%。
+//   - 移开时左端在 0.3 秒内向右移动，从右侧退出，类似右侧 transform-origin 的 scaleX。
+// 适用场景: 适合安静提示菜单和文字链接的悬停位置。
+// 标签: underline, hover, link, navigation, menu, text-link, scalex
+// 尺寸: 539x208 px · 循环周期: 4.8 s
+// Needs: kit lp -> https://motion-prompt.knothhe.com/api/v1/kit/lp.js
+// 动态示例: https://motion-prompt.knothhe.com/#086
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 14
+// 14 下線アニメーション（リンクにカーソルを乗せると下線が左から伸び、離れると右へ抜ける）
+CELLS[13] = (k, w, h, u) => {
+  frame(k);
+  const LINKS = ['サービス', '実績', '会社概要'], F = `800 20px ${JP}`, GAP = 56, LY = 84, DUR = 0.3;
+  const cur = t => path([[0, 120, 150], [0.45, 170, 80], [1.3, 186, 84], [1.55, 268, 80], [2.4, 282, 84], [2.65, 372, 80], [3.5, 390, 84], [3.95, 430, 150], [4.8, 120, 150]], t);
+  view(k, () => {
+    logo(k, 22, 28); bars(k, 90, 132, 331, 2, C.faint, 6, 12, 0.6);
+    k.font = F; const ws = LINKS.map(s => k.measureText(s).width); let x = (VW - ws.reduce((a, b) => a + b, 0) - GAP * (LINKS.length - 1)) / 2;
+    LINKS.forEach((s, i) => {
+      const x0 = x, x1 = x + ws[i], inside = t => { const [a, b] = cur(t); return a > x0 - 6 && a < x1 + 6 && b > LY - 22 && b < LY + 14; };
+      txt(k, s, x0, LY, F, C.ink);
+      // 最後に乗った・離れた時刻から 0.3秒（乗る: 左端から伸びる / 離れる: 左端から縮んで右へ抜ける）
+      const on = inside(u); let tc = null; for (let j = 0, t = u; j < 600; j++, t -= 1 / 120) if (inside(t - 1 / 120) !== on) { tc = t; break; }
+      if (tc !== null) {
+        const q = eOut(P(u, tc, tc + DUR)), a = on ? 0 : q, b = on ? q : 1;
+        if (b > a) { k.fillStyle = C.acc; k.fillRect(x0 + ws[i] * a, LY + 8, ws[i] * (b - a), 3); }
+      }
+      x += ws[i] + GAP;
+    });
+    const [cx, cy] = cur(u); cursor(k, cx, cy);
+  });
+};

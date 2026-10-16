@@ -1,0 +1,35 @@
+// Motion Prompt #056 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#056
+//
+// 轻提示 / Toast notification
+// 素材包: ui (UI 组件名称) · element 08 · 分类: 展开与叠层
+// 示例效果: 点击保存，深色通知滑入右下角，倒计时线耗尽后滑出。
+// 效果规格:
+//   - 542×191 卡片，周期 4.5 秒。1.0 秒点击左下蓝色保存按钮 110×36，光标随后离向左下。
+//   - 提示 #26282c，214×52、圆角 10，距右 18px、底部 16px；1.05–1.4 秒以 easeOutCubic 从右侧 240px 外滑入。
+//   - 内部蓝色圆内白色勾号与白色 15px“已保存”文字。
+//   - 底部倒计时线高 3px，在 1.4–3.2 秒内从 194px 线性缩至 0。
+//   - 3.2–3.55 秒以 easeInOutCubic 向右滑出 240px。
+// 适用场景: 适合不打断用户地确认保存或发送结果。
+// 标签: toast, snackbar, notification, alert, message, auto-dismiss
+// 尺寸: 542x191 px · 循环周期: 4.5 s
+// Needs: kit ui -> https://motion-prompt.knothhe.com/api/v1/kit/ui.js
+// 动态示例: https://motion-prompt.knothhe.com/#056
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 08
+// 08 トースト（Toast notification）
+CELLS[7] = ui((w, h, t) => {
+  bar(24, 16, 90, C.line2, 10); strokeRR(24, 34, 300, 34, 7, C.line2, 1.5); bar(24, 82, 90, C.line2, 10); strokeRR(24, 100, 300, 34, 7, C.line2, 1.5);
+  fillRR(24, 146, 110, 36, 8, C.blue); text('保存', 79, 164, 16, '#fff', 600, 'center');
+  const tin = eo(seg(t, 1.05, 1.4)), tout = eio(seg(t, 3.2, 3.55));
+  if (tin > 0 && tout < 1) {
+    const tw0 = 214, th = 52, tx = w - 18 - tw0 + (1 - tin) * 240 + tout * 240, ty = h - 16 - th;
+    shadowed(() => fillRR(tx, ty, tw0, th, 10, C.dark), 18, 6, .25);
+    circle(tx + 26, ty + 24, 11, C.blue); check(tx + 26, ty + 24, 5, '#fff', 2.4);
+    text('保存しました', tx + 46, ty + 24, 15, '#fff', 600);
+    const life = 1 - seg(t, 1.4, 3.2); fillRR(tx + 10, ty + th - 7, (tw0 - 20) * life, 3, 1.5, C.sb);
+  }
+  pointer([[.3, -30, h + 30], [.95, 84, 168], [1.5, 84, 168], [2.2, -40, h + 40]], [1.0], t);
+});

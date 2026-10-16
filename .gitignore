@@ -1,6 +1,9 @@
 .tmp/
+dist/
+.wrangler/
 node_modules/
 .DS_Store
 out/
 frames*/
 *.tmp.mp4
+.codex/

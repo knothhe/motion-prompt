@@ -1,0 +1,25 @@
+// Motion Prompt #028 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#028
+//
+// 变焦推进 / Zoom in
+// 素材包: camera (镜头运动与转场) · element 04 · 分类: 镜头运动
+// 示例效果: 相机不动，焦距增加，整个画面等比例放大。
+// 效果规格:
+//   - 机位与朝向固定，高 1.5m，仅焦距 330→1200px，标为 24→87mm，约 3.6 倍。
+//   - 指数插值 f = 330 × (8/2.2)^p，p 在 0.5–3.4 秒三次方缓入缓出，持续 2.9 秒。
+//   - 人物站在前方 8m，最终大小与推镜头相同，约 3.6 倍。
+//   - 无视差：前景柱子、岩石、人物、建筑和山等比例放大，遮挡关系不变。
+//   - 3.4–4.2 秒停留，最后 0.5 秒交叉淡化复位，每轮 4.7 秒。
+//   - 右上角显示焦距 24→87mm。
+// 适用场景: 适合不移动相机地突出某一点，观感比推镜头更平面、更像观察。
+// 标签: zoom, zoom in, focal length, lens, magnify, telephoto, camera move
+// 尺寸: 539x208 px · 循环周期: 9.4 s
+// Needs: kit camera -> https://motion-prompt.knothhe.com/api/v1/kit/camera.js
+// 动态示例: https://motion-prompt.knothhe.com/#028
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 04
+// 04 ズームイン: 位置は固定・焦点距離だけ伸びる（全体が同じ比率で拡大）
+CELLS[3] = shot(camCell((k, w, h, p) => world(k, w, h, cam({ f: F0 * Math.pow(8 / 2.2, p) }), { person: { z: 8 }, fg: [[-1.5, 3.6], [1.6, 4.8, 'rock']] }),
+  p => mm(F0 * Math.pow(8 / 2.2, p))));

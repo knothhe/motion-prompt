@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "motion-prompt",
+  "account_id": "d416097f8e7de099f5e27f22c87bfcc8",
+  "compatibility_date": "2026-10-16",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  },
+  "routes": [
+    { "pattern": "motion-prompt.knothhe.com", "custom_domain": true }
+  ]
+}

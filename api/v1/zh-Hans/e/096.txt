@@ -1,0 +1,46 @@
+// Motion Prompt #096 · MIT License (c) 2026 Shohei Ohtaki · https://motion-prompt.knothhe.com/#096
+//
+// 悬浮动画 / Floating animation
+// 素材包: lp (落地页与网页动效) · element 24 · 分类: 加载、导航与循环动效
+// 示例效果: 标题旁手机、心形徽章和评分标签错峰浮动，手机阴影同步变化。
+// 效果规格:
+//   - 手机 92×132，y = −8·sin(2πt/2.4)，每 2.4 秒浮动一次，正弦在两端减速。
+//   - 心形徽章半径 20，y = −6·sin(2πt/1.6 + 1.2)；评分标签 76×30，y = −6·sin(2πt/2.4 + 2.4)。
+//   - 手机下方阴影为 54×6 椭圆，尺寸和透明度乘以 (1 + y/40)，手机越高阴影越小越淡。
+//   - 周期 2.4 秒和 1.6 秒均整除 4.8 秒，循环无接缝。
+// 适用场景: 适合产品图、应用模型或装饰图标的轻柔运动。
+// 标签: floating, float, bob, hover-animation, keyframes, translatey, decoration, loop
+// 尺寸: 539x208 px · 循环周期: 4.8 s
+// Needs: kit lp -> https://motion-prompt.knothhe.com/api/v1/kit/lp.js
+// 动态示例: https://motion-prompt.knothhe.com/#096
+//
+// cells[i](k, w, h, u)：k 为 CanvasRenderingContext2D（调用方已清空并用 save/restore 包裹），w、h 为尺寸，u 为秒数，范围 [0, cycle)。画面仅由 u 决定。
+// 以下为效果代码。CELLS、常量与辅助函数位于 kit 中。
+
+// @element 24
+// 24 ふわふわアニメーション（画面の飾りが、ゆっくり上下に浮き沈みし続ける）
+CELLS[23] = (k, w, h, u) => {
+  frame(k);
+  const bob = (T, A, ph) => -A * Math.sin(2 * Math.PI * u / T + ph);   // 上下（easeInOut に近いサイン波）
+  const y1 = bob(2.4, 8, 0), y2 = bob(1.6, 6, 1.2), y3 = bob(2.4, 6, 2.4);
+  view(k, () => {
+    k.fillStyle = C.soft; k.fillRect(0, 0, VW, VH);
+    txt(k, 'アプリで、', 34, 62, `800 24px ${JP}`, C.ink); txt(k, 'もっと身軽に。', 34, 94, `800 24px ${JP}`, C.ink);
+    bars(k, 34, 108, 170, 2); btn(k, 34, 134, 112, 24, 'ダウンロード');
+    // 影（上がるほど小さく薄く）
+    const sh = 1 + y1 / 40;
+    k.fillStyle = `rgba(28,35,51,${0.16 * sh})`; k.beginPath(); k.ellipse(352, 160, 54 * sh, 6 * sh, 0, 0, 7); k.fill();
+    // スマホ
+    k.save(); k.translate(0, y1);
+    k.fillStyle = C.ink; rr(k, 306, 18, 92, 132, 16); k.fill(); k.fillStyle = '#fff'; rr(k, 312, 24, 80, 120, 11); k.fill();
+    pic(k, 318, 32, 68, 52, 0, 6); bars(k, 318, 92, 68, 3, C.faint, 5, 10);
+    k.restore();
+    // 飾り（ハートの丸と星のチップ）
+    k.save(); k.translate(0, y2); k.shadowColor = 'rgba(28,35,51,.18)'; k.shadowBlur = 10; k.shadowOffsetY = 4;
+    k.fillStyle = C.acc; k.beginPath(); k.arc(268, 54, 20, 0, 7); k.fill(); k.shadowColor = 'transparent';
+    k.fillStyle = '#fff'; k.beginPath(); k.moveTo(268, 62); k.bezierCurveTo(254, 53, 260, 41, 268, 48); k.bezierCurveTo(276, 41, 282, 53, 268, 62); k.fill(); k.restore();
+    k.save(); k.translate(0, y3); k.shadowColor = 'rgba(28,35,51,.16)'; k.shadowBlur = 10; k.shadowOffsetY = 4;
+    k.fillStyle = '#fff'; rr(k, 410, 92, 76, 30, 15); k.fill(); k.shadowColor = 'transparent';
+    txt(k, '★ 4.8', 448, 108, `800 13px ${EN}`, C.acc, 'center', 'middle'); k.restore();
+  });
+};
